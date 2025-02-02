@@ -16,10 +16,22 @@
                     archedbrows
                 </h1>
             </a>
-            <button type="button">
+            <button type="button" popovertarget="add-post">
                 ＋
             </button>
         </header>
+
+        <div id="add-post" popover>
+            <h2>
+                add post
+            </h2>
+            <form>
+                <input name="url" placeholder="https://example.com/posts/abc123">
+                <button>
+                    ⮕
+                </button>
+            </form>
+        </div>
 
         <main>
             {% block content %}

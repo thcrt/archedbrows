@@ -93,12 +93,14 @@
         --theme-radius: 8px;
 
         --theme-color-bg: var(--palette-slate-200);
-        --theme-color-bg-alt: var(--palette-slate-200);
+        --theme-color-bg-alt: var(--palette-slate-300);
+        --theme-color-bg-alt-2: var(--palette-slate-400);
         --theme-color-fg: var(--palette-slate-900);
         --theme-color-fg-alt: var(--palette-slate-600);
         --theme-color-fg-alt-2: var(--palette-slate-400);
         --theme-color-primary: var(--palette-green-500);
         --theme-color-primary-alt: var(--palette-green-700);
+        --theme-color-primary-alt-2: var(--palette-green-800);
 
     }
 
@@ -106,6 +108,7 @@
         :root {
             --theme-color-bg: var(--palette-slate-950);
             --theme-color-bg-alt: var(--palette-slate-900);
+            --theme-color-bg-alt-2: var(--palette-slate-800);
             --theme-color-fg: var(--palette-slate-200);
             --theme-color-fg-alt: var(--palette-slate-400);
             --theme-color-fg-alt-2: var(--palette-slate-600);
@@ -154,7 +157,7 @@ header {
 
     button {
         background-color: var(--theme-color-primary);
-        color: white;
+        color: var(--theme-color-primary-alt-2);
         border: 2px solid var(--theme-color-primary-alt);
         border-radius: var(--theme-radius);
         font-size: 1.5rem;
@@ -165,6 +168,71 @@ header {
     }
     
 }
+
+#add-post {
+    margin: auto 1rem;
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 1rem;
+    
+    background-color: var(--theme-color-bg-alt);
+    border: 1px solid var(--theme-color-fg-alt-2);
+    border-radius: var(--theme-radius);
+    color: var(--theme-color-fg);
+
+    &:popover-open {
+        display: flex;
+    }
+
+    &::backdrop {
+        background-color: rgb(0, 0, 0, 0.75);
+    }
+
+    h2 {
+        font-size: 1rem;
+        line-height: 1;
+        text-align: center;
+    }
+
+    form {
+        display: flex;
+
+        input {
+            background-color: var(--theme-color-bg-alt);
+            color: var(--theme-color-fg);
+
+            border: 1px solid var(--theme-color-fg-alt-2);
+            border-right: none;
+            border-top-left-radius: var(--theme-radius);
+            border-bottom-left-radius: var(--theme-radius);
+
+            flex-grow: 1;
+            outline: none;
+            padding: 0.5rem;
+
+            &:focus-visible {
+                background-color: var(--theme-color-bg-alt-2);
+            }
+        }
+
+        button {
+            background-color: var(--theme-color-primary);
+            color: var(--theme-color-primary-alt-2);
+            width: 2.5rem;
+
+            border: 1px solid var(--theme-color-fg-alt-2);
+            border-left: none;
+            border-top-right-radius: var(--theme-radius);
+            border-bottom-right-radius: var(--theme-radius);
+        }
+    }
+}
+
+
+
 
 article {
     padding: 1rem 0.5rem;
