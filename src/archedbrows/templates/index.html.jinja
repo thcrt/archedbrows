@@ -1,5 +1,17 @@
 {% extends "_base.html.jinja" %}
 
 {% block content %}
-    Hello, world!
+    {% for post in posts %}
+        <article>
+            <div class="meta">
+                <span class="user">{{ post.user }}</span>
+                <time class="time" datetime="{{ post.time }}">{{ post.time_ago }}</time>
+                <span class="source">{{ post.source }}</span>
+            </div>
+            <h2>{{ post.title }}</h2>
+            <div class="content">
+                <img src="{{ url_for('static', filename=post.images[0]) }}">
+            </div>
+        </article>
+    {% endfor %}
 {% endblock content %}
