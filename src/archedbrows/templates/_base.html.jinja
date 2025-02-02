@@ -1,0 +1,29 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>archedbrows</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+    <body>
+        <header>
+            <a href="/">
+                {% include "_logo.svg.jinja" %}
+                <h1>
+                    archedbrows
+                </h1>
+            </a>
+            <button type="button">
+                ＋
+            </button>
+        </header>
+
+        <main>
+            {% block content %}
+            {% endblock content %}
+        </main>
+    </body>
+</html>

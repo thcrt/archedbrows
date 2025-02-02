@@ -6,6 +6,6 @@ def create_app() -> f.Flask:
 
     @app.route("/")
     def index() -> str:
-        return "Hello, world!"
+        return f.render_template("index.html.jinja")
 
     return app

@@ -1,0 +1,169 @@
+@layer reset {
+    /*
+        Josh's Custom CSS Reset
+        https://www.joshwcomeau.com/css/custom-css-reset/
+    */
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    * {
+        margin: 0;
+        line-height: calc(1em + 0.5rem);
+    }
+
+    body {
+        -webkit-font-smoothing: antialiased;
+    }
+
+    img,
+    picture,
+    video,
+    canvas,
+    svg {
+        display: block;
+        max-width: 100%;
+    }
+
+    input,
+    button,
+    textarea,
+    select {
+        font: inherit;
+    }
+
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        overflow-wrap: break-word;
+    }
+
+    p {
+        text-wrap: pretty;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        text-wrap: balance;
+    }
+
+    #root,
+    #__next {
+        isolation: isolate;
+    }
+}
+
+@layer theme {
+    :root {
+        --palette-slate-50: #f8fafc;
+        --palette-slate-100: #f1f5f9;
+        --palette-slate-200: #e2e8f0;
+        --palette-slate-300: #cbd5e1;
+        --palette-slate-400: #94a3b8;
+        --palette-slate-500: #64748b;
+        --palette-slate-600: #475569;
+        --palette-slate-700: #334155;
+        --palette-slate-800: #1e293b;
+        --palette-slate-900: #0f172a;
+        --palette-slate-950: #020617;
+
+        --palette-green-50: oklch(0.982 0.018 155.826);
+        --palette-green-100: oklch(0.962 0.044 156.743);
+        --palette-green-200: oklch(0.925 0.084 155.995);
+        --palette-green-300: oklch(0.871 0.15 154.449);
+        --palette-green-400: oklch(0.792 0.209 151.711);
+        --palette-green-500: oklch(0.723 0.219 149.579);
+        --palette-green-600: oklch(0.627 0.194 149.214);
+        --palette-green-700: oklch(0.527 0.154 150.069);
+        --palette-green-800: oklch(0.448 0.119 151.328);
+        --palette-green-900: oklch(0.393 0.095 152.535);
+        --palette-green-950: oklch(0.266 0.065 152.934);
+        
+        --theme-radius: 8px;
+
+        --theme-color-bg: var(--palette-slate-200);
+        --theme-color-bg-alt: var(--palette-slate-200);
+        --theme-color-fg: var(--palette-slate-900);
+        --theme-color-fg-alt: var(--palette-slate-600);
+        --theme-color-fg-alt-2: var(--palette-slate-400);
+        --theme-color-primary: var(--palette-green-500);
+        --theme-color-primary-alt: var(--palette-green-700);
+
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --theme-color-bg: var(--palette-slate-950);
+            --theme-color-bg-alt: var(--palette-slate-900);
+            --theme-color-fg: var(--palette-slate-200);
+            --theme-color-fg-alt: var(--palette-slate-400);
+            --theme-color-fg-alt-2: var(--palette-slate-600);
+        }
+    }
+}
+
+body {
+    color: var(--theme-color-fg);
+    background-color: var(--theme-color-bg);
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+header {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--theme-color-bg-alt);
+    border-block-end: 1px solid var(--theme-color-fg-alt-2);
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        color: var(--theme-color-fg);
+        text-decoration: none;
+        
+        svg {
+            height: 2rem;
+        }
+
+        h1 {
+            line-height: 1;
+            font-weight: 500;
+
+            @media (width < 500px) {
+                display: none;
+            }
+        }
+    }
+
+    button {
+        background-color: var(--theme-color-primary);
+        color: white;
+        border: 2px solid var(--theme-color-primary-alt);
+        border-radius: var(--theme-radius);
+        font-size: 1.5rem;
+        height: 2rem;
+        width: 3rem;
+        font-weight: 950;
+        line-height: 0;
+    }
+    
+}
+
+main {
+    margin: 1rem;
+}
