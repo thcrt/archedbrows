@@ -232,6 +232,11 @@ header {
 }
 
 
+main {
+    width: fit-content;
+    margin: 0 auto;
+}
+
 
 
 article {
@@ -240,6 +245,7 @@ article {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    max-width: 50rem;
 
     .meta {
         font-size: 0.75rem;
@@ -253,7 +259,7 @@ article {
         > *:not(:first-child) {
             &::before {
                 content: "|";
-                margin-inline: 0.25rem;
+                margin-inline: 0.333em;
             }
         }
 
@@ -261,5 +267,13 @@ article {
     
     h2 {
         font-size: 1rem;
+
+        @media (width > 800px) {
+            font-size: 1.125rem;
+        }
+    }
+
+    .content {
+        
     }
 }
