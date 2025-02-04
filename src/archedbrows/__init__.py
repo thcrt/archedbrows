@@ -18,8 +18,13 @@ def create_app() -> f.Flask:
 
     @app.get("/")
     def index() -> str:
-        posts = db.session.execute(db.select(Post)).scalars()
+        posts = db.session.execute(db.select(Post).order_by(Post.time.desc())).scalars()
         return f.render_template("index.html.jinja", posts=posts)
+
+    @app.get("/posts/<int:post_id>")
+    def show_post(post_id: int) -> str:
+        post = db.get_or_404(Post, post_id)
+        return f.render_template("post.html.jinja", post=post)
 
     @app.get("/media/<int:media_id>")
     def show_media(media_id: int) -> Response:

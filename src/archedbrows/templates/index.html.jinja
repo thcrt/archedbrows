@@ -2,13 +2,18 @@
 
 {% block content %}
     {% for post in posts %}
-        <article>
+    <hr>
+        <article class="listed-post">
             <div class="meta">
                 <span class="user">{{ post.author }}</span>
-                <time class="time" datetime="{{ post.time }}">{{ post.time_ago }}</time>
-                <span class="source">{{ post.source }}</span>
+                <time class="time" title="{{ post.time }}" datetime="{{ post.time }}">{{ post.time_ago }}</time>
+                <a class="source" href="{{ post.source_url }}" target="_blank">{{ post.source }}</a>
             </div>
-            <h2>{{ post.title }}</h2>
+            <h2>
+                <a href="{{ url_for('show_post', post_id=post.id) }}">
+                    {{ post.title }}
+                </a>
+            </h2>
             <div class="content">
                 <img src="{{ url_for('show_media', media_id=post.media[0].id) }}">
             </div>
