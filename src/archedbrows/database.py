@@ -34,15 +34,16 @@ class Post(MappedAsDataclass, Model):
     __tablename__ = "posts"
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
-    title: Mapped[str]
-    author: Mapped[str]
-    time: Mapped[datetime]
     source: Mapped[str]
     source_url: Mapped[str]
+
+    title: Mapped[str]
+    author: Mapped[str | None] = mapped_column(default=None)
+    time: Mapped[datetime | None] = mapped_column(default=None)
 
     text: Mapped[str | None] = mapped_column(default=None)
     media: Mapped[list[Media]] = relationship(back_populates="post", default_factory=list)
 
     @hybrid_property
-    def time_ago(self) -> str:
-        return humanize.naturaltime(datetime.now() - self.time)
+    def time_ago(self) -> str | None:
+        return humanize.naturaltime(datetime.now() - self.time) if self.time else None
