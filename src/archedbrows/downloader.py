@@ -21,9 +21,11 @@ class Downloader:
         )
 
         info_path = self.download_dir / "info.json"
-        media_path = None
-        if download_process.stdout.strip("\n# "):
-            media_path = Path(download_process.stdout.strip("\n# "))
+        media_paths = [
+            Path(media_path.strip(" #"))
+            for media_path in download_process.stdout.split("\n")
+            if media_path != ""
+        ]
 
 
         info = json.loads(info_path.read_text())
@@ -37,7 +39,7 @@ class Downloader:
             text=info["selftext_html"],
         )
 
-        if media_path:
+        for media_path in media_paths:
             post.media.append(Media(media_path.read_bytes()))
 
         return post

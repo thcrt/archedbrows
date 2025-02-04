@@ -11,9 +11,9 @@
             {{ post.title }}
         </h2>
         <div class="content">
-            {% if post.media %}
-                <img src="{{ url_for('show_media', media_id=post.media[0].id) }}">
-            {% endif %}
+            {% for media_object in post.media %}
+                <img src="{{ url_for('show_media', media_id=media_object.id) }}">
+            {% endfor %}
             {% if post.text %}
                 <p>
                     {{ post.text | safe }}
