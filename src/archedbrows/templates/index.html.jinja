@@ -15,7 +15,14 @@
                 </a>
             </h2>
             <div class="content">
-                <img src="{{ url_for('show_media', media_id=post.media[0].id) }}">
+                {% if post.media %}
+                    <img src="{{ url_for('show_media', media_id=post.media[0].id) }}">
+                {% endif %}
+                {% if post.text %}
+                    <p>
+                        {{ post.text | truncate }}
+                    </p>
+                {% endif %}
             </div>
         </article>
     {% endfor %}
