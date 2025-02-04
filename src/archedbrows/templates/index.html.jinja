@@ -20,7 +20,7 @@
                 {% endif %}
                 {% if post.text %}
                     <p>
-                        {{ post.text | truncate }}
+                        {{ post.text | striptags | truncate }}
                     </p>
                 {% endif %}
             </div>

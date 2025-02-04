@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import arrow
+from markupsafe import Markup
 
 from .database import Media, Post
 
@@ -17,13 +18,17 @@ class Downloader:
         download_dir.mkdir(exist_ok=True)
         self.download_dir = download_dir
 
+    @staticmethod
+    def _content_to_title(content: str) -> str:
+        return textwrap.shorten(Markup(content).striptags(), width=75, placeholder="...")
+
     def parse_post(self, url: str, media_paths: list[Path], info: dict[str, Any]) -> Post:
         # Handle federated software with multiple instances, marked by a 'foo:' prefix
         if url.startswith("mastodon:") or info["category"] == "mastodon.social":
             username = info["account"]["username"]
             instance = info["instance_remote"] if info["instance_remote"] else info["instance"]
             return Post(
-                title=textwrap.shorten(info["content"], width=75, placeholder="..."),
+                title=self._content_to_title(info["content"]),
                 author=f"@{username}@{instance}",
                 time=datetime.fromisoformat(info["created_at"]),
                 source=f"{info['category']} {info['subcategory']}",
@@ -67,7 +72,7 @@ class Downloader:
                 )
             case ("bluesky", "post"):
                 return Post(
-                    title=textwrap.shorten(info["text"], width=75, placeholder="..."),
+                    title=self._content_to_title(info["text"]),
                     author=info["author"]["handle"],
                     time=datetime.fromisoformat(info["createdAt"]),
                     source=f"{info['category']} {info['subcategory']}",
@@ -437,7 +442,7 @@ class Downloader:
                 )
             case ("twitter", "tweet"):
                 return Post(
-                    title=textwrap.shorten(info["content"], width=75, placeholder="..."),
+                    title=self._content_to_title(info["content"]),
                     author=info["author"]["name"],
                     time=datetime.fromisoformat(info["date"]),
                     source=f"{info['category']} {info['subcategory']}",
