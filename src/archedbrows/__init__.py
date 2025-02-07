@@ -4,7 +4,7 @@ import flask as f
 from werkzeug import Response
 
 from .database import Media, Post, db
-from .downloader import Downloader
+from .downloader.gallerydl import download_post
 
 
 def create_app() -> f.Flask:
@@ -14,7 +14,6 @@ def create_app() -> f.Flask:
     db.init_app(app)
     with app.app_context():
         db.create_all()
-    downloader = Downloader()
 
     @app.get("/")
     def index() -> str:
@@ -33,7 +32,7 @@ def create_app() -> f.Flask:
 
     @app.post("/add")
     def add() -> Response:
-        post = downloader.download_post(f.request.form["url"])
+        post = download_post(f.request.form["url"])
         db.session.add(post)
         db.session.commit()
         return f.redirect(f.url_for("index"))
