@@ -225,9 +225,16 @@ def parse_post(url: str, info: dict[str, Any]) -> Post:
                 text=info["description"],
             )
         case ("imgur", "album"):
-            # TODO: Pending reimplementation after rewrite to call `gallery-dl` directly. Yes,
-            # this is a regression :(
-            raise NotImplementedError
+            # TODO: Descriptions are on a per-image basis, and this only captures the first
+            # image's description
+            return Post(
+                title=info["album"]["title"],
+                author=info["album"]["account"]["username"],
+                time=datetime.fromisoformat(info["album"]["created_at"]),
+                source=f"{info['category']} {info['subcategory']}",
+                source_url=url,
+                text=info["description"],
+            )
         case ("instagram", _):
             # TODO: We seem to get blocked when downloading an individual post, and downloading
             # a whole profile seems fine but gets rate-limited super fast. Downloading a whole
