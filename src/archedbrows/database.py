@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import StrEnum, auto
 from typing import TYPE_CHECKING
 
 import humanize
@@ -21,13 +22,30 @@ else:
 
 
 class Media(MappedAsDataclass, Model):
+    class MediaType(StrEnum):
+        AUDIO = auto()
+        IMAGE = auto()
+        VIDEO = auto()
+
     __tablename__ = "images"
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     data: Mapped[bytes]
-    mime_type: Mapped[str] = mapped_column(default_factory=str)
+    filename: Mapped[str | None] = mapped_column(default=None)
+    mime_type: Mapped[str | None] = mapped_column(default=None)
     post_id: Mapped[int | None] = mapped_column(ForeignKey("posts.id"), default=None)
     post: Mapped["Post | None"] = relationship(back_populates="media", default=None)
+
+    @hybrid_property
+    def type(self) -> MediaType | None:
+        if self.mime_type is None:
+            return None
+
+        main_type = self.mime_type.split("/", 1)[0].lower()
+        if main_type in self.MediaType:
+            return self.MediaType(main_type)
+        else:
+            return None
 
 
 class Post(MappedAsDataclass, Model):

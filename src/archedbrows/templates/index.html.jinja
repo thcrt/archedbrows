@@ -1,4 +1,5 @@
 {% extends "_base.html.jinja" %}
+{% from "_media.html.jinja" import media %}
 
 {% block content %}
     {% for post in posts %}
@@ -16,7 +17,7 @@
             </h2>
             <div class="content">
                 {% if post.media %}
-                    <img src="{{ url_for('show_media', media_id=post.media[0].id) }}">
+                    {{ media(post.media[0]) }}
                 {% endif %}
                 {% if post.text %}
                     <p>

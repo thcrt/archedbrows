@@ -1,4 +1,5 @@
 from io import BytesIO
+from typing import Any, cast
 
 from gallery_dl.extractor.common import Extractor  # type: ignore
 from gallery_dl.job import DownloadJob, Job  # type: ignore
@@ -41,3 +42,11 @@ class InMemoryDownloadJob(DownloadJob):
         super().__init__(url, parent)
         self.initialize()
         self.pathfmt = InMemoryFormat(self.extractor)
+
+    @property
+    def metadata(self) -> dict[str, Any]:
+        return cast(dict[str, Any], self.pathfmt.kwdict)
+
+    @property
+    def files(self) -> dict[str, bytes]:
+        return self.pathfmt.files
