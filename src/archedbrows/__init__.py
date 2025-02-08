@@ -28,7 +28,9 @@ def create_app() -> f.Flask:
     @app.get("/media/<int:media_id>")
     def show_media(media_id: int) -> Response:
         media = db.get_or_404(Media, media_id)
-        return f.send_file(io.BytesIO(media.data), mimetype=media.mime_type)
+        return f.send_file(
+            io.BytesIO(media.data), mimetype=media.mime_type, download_name=media.filename
+        )
 
     @app.post("/add")
     def add() -> Response:

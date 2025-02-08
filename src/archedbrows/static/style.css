@@ -261,20 +261,55 @@ article {
     flex-direction: column;
     gap: 0.25rem;
     position: relative;
-    max-width: 75rem;
-
+    width: 50rem;
 
     &.listed-post {
-        max-width: 50rem;
-
         &:hover {
             background-color: var(--theme-color-bg-alt);
             box-shadow: 0 0 0 1px var(--theme-color-bg-alt-2);
+        }
+
+        .content:has(.post-media) {
+            min-height: 10rem;
+            height: 25rem;
+            overflow: hidden;
+            position: relative;
+    
+            .blur-bg {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+
+                background-color: black;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                transform: scale(1.8);
+                filter: blur(15px);
+              }
+            
+            .post-media {
+                position: absolute;
+                inset: 0;
+                max-width: 100%;
+                max-height: 100%;
+                margin: auto;
+            }
         }
     }
 
     &.single-post {
         margin-block: 1rem;
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-block: 1rem;
+            width: 100%;
+        }
     }
 
     .meta {
@@ -314,6 +349,7 @@ article {
 
     h2 {
         font-size: 1rem;
+        text-wrap: inherit;
 
         @media (width > 800px) {
             font-size: 1.125rem;
@@ -334,7 +370,4 @@ article {
         }
     }
 
-    .content > .post-media {
-        width: 100%;
-    }
 }

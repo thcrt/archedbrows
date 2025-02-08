@@ -17,6 +17,7 @@
             </h2>
             <div class="content">
                 {% if post.media %}
+                    <div class="blur-bg" style="background-image: url('{{ url_for('show_media', media_id=post.media[0].id) }}');"></div>
                     {{ media(post.media[0]) }}
                 {% endif %}
                 {% if post.text %}
