@@ -4,7 +4,7 @@ import flask as f
 from werkzeug import Response
 
 from .database import Media, Post, db
-from .downloader.gallerydl import download_post
+from .downloader import download_post
 
 
 def create_app() -> f.Flask:

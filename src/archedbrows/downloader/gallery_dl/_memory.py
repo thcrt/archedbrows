@@ -1,27 +1,14 @@
-from io import BytesIO
 from typing import Any, Self
 
-import gallery_dl.extractor  # type: ignore
-from gallery_dl.extractor.common import Extractor  # type: ignore
-from gallery_dl.job import DownloadJob, Job  # type: ignore
-from gallery_dl.path import PathFormat  # type: ignore
-from gallery_dl.text import nameext_from_url  # type: ignore
+import gallery_dl.extractor
+from gallery_dl.extractor.common import Extractor
+from gallery_dl.job import DownloadJob, Job
+from gallery_dl.path import PathFormat
+from gallery_dl.text import nameext_from_url
+
+from ..util import PersistentBytes
 
 type KWDict = dict[str, Any]
-
-
-class PersistentBytes(BytesIO):
-    def close(self) -> None:
-        # This prevents the default behaviour of closing the buffer when exiting a `with` block, as
-        # well as the standard API of calling `.close()` manually. There's a good reason for it,
-        # though! `gallery_dl` internally will close the IO object that it gets from `pathfmt` in a
-        # few places, which make sense for writing to a file. But we want to only store the download
-        # in memory, not to a file, so we need to make sure the IO object stays open until we're
-        # done with it.
-        pass
-
-    def real_close(self) -> None:
-        return super().close()
 
 
 # mypy: allow_subclassing_any

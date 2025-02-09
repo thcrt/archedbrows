@@ -39,6 +39,14 @@ build.hooks.vcs.version-file = "src/archedbrows/_version.py"
 packages = "archedbrows"
 strict = true
 
+[[tool.mypy.overrides]]
+module = ["gallery_dl.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["yt_dlp.*"]
+ignore_missing_imports = true
+
 [tool.ruff]
 line-length = 100
 lint.select = [
