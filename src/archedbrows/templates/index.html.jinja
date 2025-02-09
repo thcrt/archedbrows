@@ -17,7 +17,9 @@
             </h2>
             <div class="content">
                 {% if post.media %}
-                    <div class="blur-bg" style="background-image: url('{{ url_for('show_media', media_id=post.media[0].id) }}');"></div>
+                    {% if post.media[0].type in ("image", "video") %}
+                        <div class="blur-bg" style="background-image: url('{{ url_for('show_media', media_id=post.media[0].id) }}');"></div>
+                    {% endif %}
                     {{ media(post.media[0]) }}
                 {% endif %}
                 {% if post.text %}

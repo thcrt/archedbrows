@@ -13,7 +13,7 @@
         </video>
 
     {% elif media_object.type == "audio" %}
-        <audio class="post-media" src="{{ media_url }}">
+        <audio class="post-media" src="{{ media_url }}" controls>
             <p>Couldn't embed the audio {{ media_object.filename }}.</p>
             <a href="{{ media_url }}">
                 Download

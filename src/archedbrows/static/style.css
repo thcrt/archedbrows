@@ -269,7 +269,7 @@ article {
             box-shadow: 0 0 0 1px var(--theme-color-bg-alt-2);
         }
 
-        .content:has(.post-media) {
+        .content:has(.blur-bg) {
             min-height: 10rem;
             height: 25rem;
             overflow: hidden;
@@ -297,6 +297,10 @@ article {
                 max-height: 100%;
                 margin: auto;
             }
+        }
+
+        .content audio.post-media {
+            width: 100%;
         }
     }
 
