@@ -14,7 +14,7 @@ dependencies = [
     "gallery-dl>=1.28.5",
     "humanize>=4.11.0",
     "waitress>=3.0.2",
-    "yt-dlp>=2025.1.26",
+    "yt-dlp[curl-cffi,default]>=2025.1.26",
 ]
 
 [project.urls]
