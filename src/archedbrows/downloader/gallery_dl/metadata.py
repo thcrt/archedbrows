@@ -1,13 +1,12 @@
 from datetime import datetime
-from typing import Any
 
 import arrow
 
 from ...database import Post
-from ..util import content_to_title
+from ..common import InfoDict, content_to_title
 
 
-def parse_post(url: str, info: dict[str, Any]) -> Post:
+def parse_post(url: str, info: InfoDict) -> Post:
     # Handle federated software with multiple instances, marked by a 'foo:' prefix
     if url.startswith("mastodon:") or info["category"] == "mastodon.social":
         username = info["account"]["username"]

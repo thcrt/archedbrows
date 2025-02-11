@@ -1,12 +1,12 @@
 from datetime import datetime
-from typing import Any
 
 import arrow
 
 from ...database import Post
+from ..common import InfoDict
 
 
-def parse_post(url: str, meta: dict[str, Any]) -> Post:
+def parse_post(url: str, meta: InfoDict) -> Post:
     title = meta.get("title", "untitled")
     author = meta.get("uploader_id")
     time = datetime.fromtimestamp(meta["timestamp"]) if "timestamp" in meta else None

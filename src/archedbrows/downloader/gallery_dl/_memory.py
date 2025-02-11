@@ -6,15 +6,13 @@ from gallery_dl.job import DownloadJob, Job
 from gallery_dl.path import PathFormat
 from gallery_dl.text import nameext_from_url
 
-from ..util import PersistentBytes
-
-type KWDict = dict[str, Any]
+from ..common import InfoDict, PersistentBytes
 
 
 # mypy: allow_subclassing_any
 class InMemoryFormat(PathFormat):
     files: dict[str, bytes]
-    kwdict: KWDict
+    kwdict: InfoDict
 
     def __init__(self, extractor: Extractor):
         super().__init__(extractor)
@@ -41,7 +39,7 @@ class InMemoryDownloadJob(DownloadJob):
         self.pathfmt = InMemoryFormat(self.extractor)
 
     @property
-    def metadata(self) -> KWDict:
+    def metadata(self) -> InfoDict:
         metadata = self.pathfmt.kwdict
         for child in self.children:
             metadata = metadata | child.metadata
@@ -54,7 +52,7 @@ class InMemoryDownloadJob(DownloadJob):
             files = files | child.files
         return files
 
-    def handle_queue(self, url: str, kwdict: KWDict) -> None:
+    def handle_queue(self, url: str, kwdict: InfoDict) -> None:
         if url in self.visited:
             return
         self.visited.add(url)
