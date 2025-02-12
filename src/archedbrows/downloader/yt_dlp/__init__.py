@@ -62,7 +62,7 @@ class YTDLPDownloader(Downloader):
             for file_meta, file in buffer.files:
                 filename = f"{file_meta['id']}.{file_meta['ext']}"
                 post.media.append(
-                    Media(file, filename=filename, mime_type=mimetypes.guess_type(filename)[0])
+                    Media(file, filename=filename, mime_type=mimetypes.guess_file_type(filename)[0])
                 )
 
             return post

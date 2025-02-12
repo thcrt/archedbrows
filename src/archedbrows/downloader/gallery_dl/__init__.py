@@ -29,6 +29,6 @@ class GalleryDLDownloader(Downloader):
         post = parse_post(self.url, self.job.metadata)
         for filename, file in self.job.files.items():
             post.media.append(
-                Media(file, filename=filename, mime_type=mimetypes.guess_type(filename)[0])
+                Media(file, filename=filename, mime_type=mimetypes.guess_file_type(filename)[0])
             )
         return post
