@@ -1,6 +1,6 @@
-from archedbrows.database import Post
-from archedbrows.downloader.common import UnsupportedURLError
+from archedbrows.models import Post
 
+from .common import UnsupportedURLError
 from .gallery_dl import GalleryDLDownloader
 from .yt_dlp import YTDLPDownloader
 

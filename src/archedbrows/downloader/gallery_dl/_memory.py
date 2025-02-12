@@ -6,7 +6,7 @@ from gallery_dl.job import DownloadJob, Job
 from gallery_dl.path import PathFormat
 from gallery_dl.text import nameext_from_url
 
-from ..common import InfoDict, PersistentBytes
+from archedbrows.downloader.common import InfoDict, PersistentBytes
 
 
 # mypy: allow_subclassing_any

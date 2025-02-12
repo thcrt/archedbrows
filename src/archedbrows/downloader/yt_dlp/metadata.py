@@ -2,8 +2,8 @@ from datetime import datetime
 
 import arrow
 
-from ...database import Post
-from ..common import InfoDict
+from archedbrows.downloader.common import InfoDict
+from archedbrows.models import Post
 
 
 def parse_post(url: str, meta: InfoDict) -> Post:

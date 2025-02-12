@@ -28,5 +28,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Reset the entrypoint, don't invoke `uv`
 ENTRYPOINT []
 
+# Run database migrations
+RUN ["flask", "--app", "archedbrows", "db", "upgrade"]
+
 # Let's run this thing
 CMD ["waitress-serve", "--call", "archedbrows:create_app"]

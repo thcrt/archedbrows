@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, Self
 
 from markupsafe import Markup
 
-from ..database import Post
+from archedbrows.models import Post
 
 if TYPE_CHECKING:
     from _typeshed import ReadableBuffer

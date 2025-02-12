@@ -3,17 +3,11 @@ from enum import StrEnum, auto
 from typing import TYPE_CHECKING
 
 import humanize
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import DeclarativeBase, Mapped, MappedAsDataclass, mapped_column, relationship
+from sqlalchemy.orm import Mapped, MappedAsDataclass, mapped_column, relationship
 
-
-class Base(DeclarativeBase):
-    pass
-
-
-db = SQLAlchemy(model_class=Base)
+from . import db
 
 if TYPE_CHECKING:
     from flask_sqlalchemy.model import Model

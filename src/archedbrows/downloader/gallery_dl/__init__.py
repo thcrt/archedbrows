@@ -4,8 +4,9 @@ from typing import override
 import gallery_dl.config
 from gallery_dl.exception import NoExtractorError
 
-from ...database import Media, Post
-from ..common import Downloader, UnsupportedURLError
+from archedbrows.downloader.common import Downloader, UnsupportedURLError
+from archedbrows.models import Media, Post
+
 from ._memory import InMemoryDownloadJob
 from .metadata import parse_post
 

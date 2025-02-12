@@ -7,8 +7,14 @@ from yt_dlp.networking.exceptions import HTTPError
 from yt_dlp.networking.impersonate import ImpersonateTarget
 from yt_dlp.utils import DownloadError
 
-from ...database import Media, Post
-from ..common import Downloader, InfoDict, MultipleFileBuffer, UnsupportedURLError
+from archedbrows.downloader.common import (
+    Downloader,
+    InfoDict,
+    MultipleFileBuffer,
+    UnsupportedURLError,
+)
+from archedbrows.models import Media, Post
+
 from .metadata import parse_post
 
 IMPERSONATE_OPTIONS = {
