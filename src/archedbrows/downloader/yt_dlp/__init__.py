@@ -20,13 +20,13 @@ from .metadata import parse_post
 if TYPE_CHECKING:
     from yt_dlp import YDLOpts
 
-IMPERSONATE_OPTIONS: YDLOpts = {
+IMPERSONATE_OPTIONS: "YDLOpts" = {
     "impersonate": ImpersonateTarget(client="chrome", os="windows", os_version="10")
 }
 
 
 class YTDLPDownloader(Downloader):
-    options: YDLOpts
+    options: "YDLOpts"
 
     def __init__(self, url: str) -> None:
         super().__init__(url)
