@@ -1,0 +1,41 @@
+{% extends "_base.html.jinja" %}
+
+{% block content %}
+    <article class="edit-post">
+        <form method="post">
+            <div class="title">
+                <h2>
+                    Editing post #{{ post.id }}
+                </h2>
+                <button class="button-primary" type="submit">
+                    Save
+                </button>
+                <a class="button" href="{{ url_for('show_post', post_id=post.id) }}">
+                    Cancel
+                </a>
+            </div>
+            <div class="content">
+                <label>
+                    <span class="label">Title</span>
+                    <input required name="title" type="text" value="{{ post.title }}" placeholder="{{ post.title }}">
+                </label>
+                <label>
+                    <span class="label">Author</span>
+                    <input name="author" type="text" value="{{ post.author }}" placeholder="{{ post.author }}">
+                </label>
+                <label>
+                    <span class="label">Posted</span>
+                    <input name="time" type="datetime-local" value="{{ post.time_created }}" placeholder="{{ post.time_created }}">
+                </label>
+                <label>
+                    <span class="label">Source</span>
+                    <input name="source" type="text" value="{{ post.source }}" placeholder="{{ post.source }}">
+                </label>
+                <label>
+                    <span class="label">URL</span>
+                    <input name="source_url" type="url" value="{{ post.source_url }}" placeholder="{{ post.source_url }}">
+                </label>
+            </div>
+        </form>
+    </article>
+{% endblock content %}

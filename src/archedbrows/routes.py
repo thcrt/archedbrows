@@ -27,8 +27,20 @@ def show_media(media_id: int) -> Response:
 
 
 @current_app.post("/add")
-def add() -> Response:
+def add_post() -> Response:
     post = download_post(request.form["url"])
     db.session.add(post)
     db.session.commit()
-    return redirect(url_for("index"))
+    return redirect(url_for("show_post", post_id=post.id))
+
+
+@current_app.route("/edit/<int:post_id>", methods=["GET", "POST"])
+def edit_post(post_id: int) -> str | Response:
+    post = db.get_or_404(Post, post_id)
+    if request.method == "POST":
+        for key, val in request.form.items():
+            if hasattr(post, key):
+                setattr(post, key, val)
+        db.session.commit()
+        return redirect(url_for("show_post", post_id=post_id))
+    return render_template("edit.html.jinja", post=post)

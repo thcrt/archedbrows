@@ -122,6 +122,61 @@ body {
     font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+button,
+.button {
+    cursor: pointer;
+    border-radius: var(--theme-radius);
+    padding: 0.25rem 0.5rem;
+    text-decoration: none;
+
+    color: var(--theme-color-fg-alt);
+    border: 1px solid var(--theme-color-fg-alt-2);
+    background-color: var(--theme-color-bg-alt);
+    outline: none;
+
+    &:hover,
+    &:focus-visible {
+        border-color: var(--theme-color-fg-alt);
+        background-color: var(--theme-color-bg-alt-2);
+    }
+
+    &.button-primary {
+        color: var(--theme-color-bg-alt-2);
+        border-color: var(--theme-color-primary-alt);
+        background-color: var(--theme-color-primary);
+
+        &:hover,
+        &:focus-visible {
+            color: var(--theme-color-fg);
+            border-color: var(--theme-color-primary);
+            background-color: var(--theme-color-primary-alt);
+        }
+    }
+}
+
+input {
+    border-radius: var(--theme-radius);
+    background-color: var(--theme-color-bg-alt);
+    color: var(--theme-color-fg);
+
+    border: 1px solid var(--theme-color-fg-alt-2);
+
+    outline: none;
+    padding: 0.5rem;
+
+    &:focus-visible {
+        background-color: var(--theme-color-bg-alt-2);
+    }
+}
+
+label {
+    color: var(--theme-color-fg-alt-2);
+
+    &:focus-within {
+        color: var(--theme-color-fg-alt);
+    }
+}
+
 header {
     padding: 0.5rem;
     display: flex;
@@ -157,10 +212,6 @@ header {
     }
 
     button {
-        background-color: var(--theme-color-primary);
-        color: var(--theme-color-primary-alt-2);
-        border: 2px solid var(--theme-color-primary-alt);
-        border-radius: var(--theme-radius);
         font-size: 1.5rem;
         height: 2rem;
         width: 3rem;
@@ -202,32 +253,17 @@ header {
         display: flex;
 
         input {
-            background-color: var(--theme-color-bg-alt);
-            color: var(--theme-color-fg);
-
-            border: 1px solid var(--theme-color-fg-alt-2);
             border-right: none;
-            border-top-left-radius: var(--theme-radius);
-            border-bottom-left-radius: var(--theme-radius);
-
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
             flex-grow: 1;
-            outline: none;
-            padding: 0.5rem;
-
-            &:focus-visible {
-                background-color: var(--theme-color-bg-alt-2);
-            }
         }
 
         button {
-            background-color: var(--theme-color-primary);
-            color: var(--theme-color-primary-alt-2);
             width: 2.5rem;
-
-            border: 1px solid var(--theme-color-fg-alt-2);
             border-left: none;
-            border-top-right-radius: var(--theme-radius);
-            border-bottom-right-radius: var(--theme-radius);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
         }
     }
 }
@@ -264,6 +300,34 @@ article {
     width: 50rem;
     max-width: 100svw;
 
+    .title {
+        display: flex;
+        gap: 0.5rem;
+        align-items: end;
+
+        h2 {
+            flex-grow: 1;
+            font-size: 1.5rem;
+        }
+
+    }
+
+    &.edit-post form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            input {
+                width: 100%;
+            }
+        }
+    }
+
     &.listed-post {
         &:hover {
             background-color: var(--theme-color-bg-alt);
@@ -275,7 +339,7 @@ article {
             height: 25rem;
             overflow: hidden;
             position: relative;
-    
+
             .blur-bg {
                 position: absolute;
                 left: 0;
@@ -289,8 +353,8 @@ article {
                 background-size: contain;
                 transform: scale(1.8);
                 filter: blur(15px);
-              }
-            
+            }
+
             .post-media {
                 position: absolute;
                 inset: 0;
@@ -306,6 +370,10 @@ article {
     }
 
     &.single-post {
+        .title a.button {
+            padding-inline: 1rem;
+        }
+
         margin-block: 1rem;
 
         .content {

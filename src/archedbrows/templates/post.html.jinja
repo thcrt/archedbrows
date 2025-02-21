@@ -8,9 +8,14 @@
             <time class="time" title="{{ post.time_created }}" datetime="{{ post.time_created }}">{{ post.time_ago }}</time>
             <a class="source" href="{{ post.source_url }}" target="_blank">{{ post.source }}</a>
         </div>
-        <h2>
-            {{ post.title }}
-        </h2>
+        <div class="title">
+            <h2>
+                {{ post.title }}
+            </h2>
+            <a class="button" href="{{ url_for('edit_post', post_id=post.id) }}">
+                Edit
+            </a>
+        </div>
         <div class="content">
             {% for media_object in post.media %}
                 {{ media(media_object) }}
