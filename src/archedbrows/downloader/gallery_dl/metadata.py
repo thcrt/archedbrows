@@ -14,7 +14,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
         return Post(
             title=content_to_title(info["content"]),
             author=f"@{username}@{instance}",
-            time=info["created_at"],
+            time_created=info["created_at"],
             source=f"{info['category']} {info['subcategory']}",
             source_url=url.removeprefix("mastodon:"),
             text=info["content"],
@@ -25,7 +25,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"],
-                time=arrow.utcnow().dehumanize(info["date"]).datetime,
+                time_created=arrow.utcnow().dehumanize(info["date"]).datetime,
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -34,7 +34,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["name"],
                 author=info["user"]["username"],
-                time=datetime.fromisoformat(info["created_at"]),
+                time_created=datetime.fromisoformat(info["created_at"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -49,7 +49,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["name"],
                 author=info["creator"]["displayName"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -58,7 +58,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=content_to_title(info["text"]),
                 author=info["author"]["handle"],
-                time=datetime.fromisoformat(info["createdAt"]),
+                time_created=datetime.fromisoformat(info["createdAt"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["text"],
@@ -85,7 +85,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
         case ("catbox", "album"):
             return Post(
                 title=info["album_name"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -95,7 +95,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"],
-                time=datetime.fromisoformat(info["published"]),
+                time_created=datetime.fromisoformat(info["published"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["content"],
@@ -105,7 +105,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["username"],
-                time=datetime.fromisoformat(info["published"]),
+                time_created=datetime.fromisoformat(info["published"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["content"],
@@ -114,7 +114,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["username"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -123,7 +123,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
             )
@@ -138,7 +138,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"]["username"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -147,7 +147,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["gallery"]["title"],
                 author=info["gallery"]["username"],
-                time=datetime.fromtimestamp(int(info["gallery"]["date_create"])),
+                time_created=datetime.fromtimestamp(int(info["gallery"]["date_create"])),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["gallery"]["description"],
@@ -156,7 +156,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"],
-                time=datetime.fromisoformat(info["date"]),
+                time_created=datetime.fromisoformat(info["date"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -170,7 +170,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             # account to test
             return Post(
                 title=info["name"],
-                time=datetime.fromtimestamp(int(info["createTime"])),
+                time_created=datetime.fromtimestamp(int(info["createTime"])),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
             )
@@ -190,7 +190,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"]["username"],
-                time=arrow.utcnow().dehumanize(info["created"]).datetime,
+                time_created=arrow.utcnow().dehumanize(info["created"]).datetime,
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
             )
@@ -218,7 +218,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             # imgur/album below.
             return Post(
                 title=info["title"],
-                time=datetime.fromisoformat(info["created_at"]),
+                time_created=datetime.fromisoformat(info["created_at"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -229,7 +229,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["album"]["title"],
                 author=info["album"]["account"]["username"],
-                time=datetime.fromisoformat(info["album"]["created_at"]),
+                time_created=datetime.fromisoformat(info["album"]["created_at"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -245,7 +245,9 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["document"]["title"],
                 author=info["document"]["username"],
-                time=datetime.fromisoformat(info["document"]["originalPublishDateInISOString"]),
+                time_created=datetime.fromisoformat(
+                    info["document"]["originalPublishDateInISOString"]
+                ),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["document"]["description"],
@@ -254,7 +256,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["owner_username"],
-                time=datetime.fromisoformat(info["date_added"]),
+                time_created=datetime.fromisoformat(info["date_added"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -267,7 +269,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["username"],
-                time=datetime.fromisoformat(info["published"]),
+                time_created=datetime.fromisoformat(info["published"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["content"],
@@ -282,7 +284,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["uploader"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
             )
@@ -292,7 +294,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text="\n".join((info["comment"], info["description"])),
@@ -304,7 +306,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["user"]["username"],
-                time=datetime.fromisoformat(info["created_at"]),
+                time_created=datetime.fromisoformat(info["created_at"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -313,7 +315,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["closeup_attribution"]["username"],
-                time=arrow.get(info["created_at"], arrow.FORMAT_RFC2822).datetime,
+                time_created=arrow.get(info["created_at"], arrow.FORMAT_RFC2822).datetime,
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description_html"],
@@ -336,7 +338,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["username"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
             )
@@ -345,7 +347,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["uploader"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
             )
@@ -353,7 +355,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["author"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["selftext_html"],
@@ -395,7 +397,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=f"{info['game']['name']} - {info['style']} by {info['author']['name']}",
                 author=info["author"]["name"],
-                time=datetime.fromtimestamp(info["date"]),
+                time_created=datetime.fromtimestamp(info["date"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["notes"],
@@ -404,7 +406,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["title"],
                 author=info["author"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -422,7 +424,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=content_to_title(info["content"]),
                 author=info["author"]["name"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["content"],
@@ -431,7 +433,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["alt_description"],
                 author=info["user"]["username"],
-                time=datetime.fromisoformat(info["created_at"]),
+                time_created=datetime.fromisoformat(info["created_at"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["description"],
@@ -442,7 +444,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
         case ("webmshare", "video"):
             return Post(
                 title=info["title"],
-                time=info["date"],
+                time_created=info["date"],
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
             )
@@ -450,7 +452,7 @@ def parse_post(url: str, info: InfoDict) -> Post:
             return Post(
                 title=info["gallery"]["title"],
                 author=info["user"]["name"],
-                time=datetime.fromisoformat(info["gallery"]["date"]),
+                time_created=datetime.fromisoformat(info["gallery"]["date"]),
                 source=f"{info['category']} {info['subcategory']}",
                 source_url=url,
                 text=info["gallery"]["description"],

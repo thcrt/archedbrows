@@ -10,7 +10,7 @@ from .models import Media, Post
 
 @current_app.get("/")
 def index() -> str:
-    posts = db.session.execute(db.select(Post).order_by(Post.time.desc())).scalars()
+    posts = db.session.execute(db.select(Post).order_by(Post.time_added.desc())).scalars()
     return render_template("index.html.jinja", posts=posts)
 
 

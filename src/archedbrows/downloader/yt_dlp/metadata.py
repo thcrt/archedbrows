@@ -35,7 +35,7 @@ def parse_post(url: str, meta: InfoDict) -> Post:
     return Post(
         title=title,
         author=author,
-        time=time,
+        time_created=time,
         source=source,
         source_url=url,
         text=text,
