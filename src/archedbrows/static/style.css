@@ -262,6 +262,7 @@ article {
     gap: 0.25rem;
     position: relative;
     width: 50rem;
+    max-width: 100svw;
 
     &.listed-post {
         &:hover {
