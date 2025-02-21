@@ -2,7 +2,7 @@ import textwrap
 from abc import ABC, abstractmethod
 from io import BytesIO
 from types import TracebackType
-from typing import TYPE_CHECKING, Any, Self
+from typing import TYPE_CHECKING, Any, Self, override
 
 from markupsafe import Markup
 
@@ -23,6 +23,7 @@ class Downloader(ABC):
 
 
 class PersistentBytes(BytesIO):
+    @override
     def close(self) -> None:
         # This prevents the default behaviour of closing the buffer when exiting a `with` block, as
         # well as the standard API of calling `.close()` manually. There's a good reason for it,

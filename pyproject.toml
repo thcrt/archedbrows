@@ -25,7 +25,7 @@ Issues = "https://github.com/thcrt/archedbrows/issues"
 
 [dependency-groups]
 dev = [
-    "mypy>=1.14.1",
+    "pyright>=1.1.394",
     "ruff>=0.9.4",
 ]
 
@@ -37,17 +37,19 @@ build-backend = "hatchling.build"
 version.source = "vcs"
 build.hooks.vcs.version-file = "src/archedbrows/_version.py"
 
-[tool.mypy]
-packages = "archedbrows"
-strict = true
-
-[[tool.mypy.overrides]]
-module = ["gallery_dl.*"]
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["yt_dlp.*"]
-ignore_missing_imports = true
+[tool.pyright]
+include = ["src"]
+strict = ["**/*"]
+ignore = ["**/_version.py"]
+deprecateTypingAliases = true
+reportCallInDefaultInitializer = "information"
+reportImplicitOverride = "warning"
+reportImplicitStringConcatenation = "warning"
+reportPropertyTypeMismatch = "warning"
+reportShadowedImports = "warning"
+reportUninitializedInstanceVariable = "warning"
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnusedCallResult = "information"
 
 [tool.ruff]
 line-length = 100

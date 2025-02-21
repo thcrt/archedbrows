@@ -20,8 +20,8 @@ def create_app() -> f.Flask:
     migrate.init_app(app, db)
 
     with app.app_context():
-        from . import routes  # noqa: F401
+        from . import routes  # noqa: F401 # pyright: ignore[reportUnusedImport]
 
-    from .models import Media, Post  # noqa: F401
+    from .models import Media, Post  # noqa: F401 # pyright: ignore[reportUnusedImport]
 
     return app

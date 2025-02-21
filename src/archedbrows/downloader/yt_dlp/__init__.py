@@ -1,6 +1,6 @@
 import mimetypes
 from contextlib import redirect_stdout
-from typing import cast, override
+from typing import TYPE_CHECKING, cast, override
 
 from yt_dlp import YoutubeDL
 from yt_dlp.networking.exceptions import HTTPError
@@ -17,17 +17,20 @@ from archedbrows.models import Media, Post
 
 from .metadata import parse_post
 
-IMPERSONATE_OPTIONS = {
+if TYPE_CHECKING:
+    from yt_dlp import YDLOpts
+
+IMPERSONATE_OPTIONS: YDLOpts = {
     "impersonate": ImpersonateTarget(client="chrome", os="windows", os_version="10")
 }
 
 
 class YTDLPDownloader(Downloader):
-    options: InfoDict
+    options: YDLOpts
 
-    def __init__(self, url: str):
+    def __init__(self, url: str) -> None:
         super().__init__(url)
-        self.options = {
+        self.options: YDLOpts = {
             "outtmpl": "-",
             "logtostderr": True,
             "progress_hooks": [],
@@ -40,13 +43,19 @@ class YTDLPDownloader(Downloader):
     @override
     def run(self) -> Post:
         with MultipleFileBuffer() as buffer:
+            assert "progress_hooks" in self.options
             self.options["progress_hooks"].append(buffer.callback)
 
             with redirect_stdout(buffer):  # type: ignore[type-var]
                 try:
                     meta = self._run()
                 except DownloadError as e:
-                    if isinstance(e.exc_info[1], HTTPError) and e.exc_info[1].status == 403:
+                    assert isinstance(e, DownloadError)
+                    if (
+                        e.exc_info
+                        and isinstance(e.exc_info[1], HTTPError)
+                        and e.exc_info[1].status == 403
+                    ):
                         # Try again, but pretend to be a human
                         self.options.update(IMPERSONATE_OPTIONS)
                         meta = self._run()
