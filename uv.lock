@@ -40,6 +40,7 @@ dependencies = [
 dev = [
     { name = "pyright" },
     { name = "ruff" },
+    { name = "yt-dlp-types" },
 ]
 
 [package.metadata]
@@ -59,6 +60,7 @@ requires-dist = [
 dev = [
     { name = "pyright", specifier = ">=1.1.394" },
     { name = "ruff", specifier = ">=0.9.4" },
+    { name = "yt-dlp-types", specifier = ">=0.0.14" },
 ]
 
 [[package]]
@@ -645,4 +647,13 @@ default = [
     { name = "requests" },
     { name = "urllib3" },
     { name = "websockets" },
+]
+
+[[package]]
+name = "yt-dlp-types"
+version = "0.0.14"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d0/9c/c384597d50f1dce05f60cabe99355e3756cb8a9f3e7baad613d43d67778d/yt_dlp_types-0.0.14.tar.gz", hash = "sha256:42ec6a8eaf5be381ecc2dba81c46129a69b9cf85a627140978b10245b054c38d", size = 15029 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/3d/24d78c37fb549a9f7a64ee0107ada08f7f8997eefd92e324b70d9fa7c323/yt_dlp_types-0.0.14-py3-none-any.whl", hash = "sha256:05ecbbd6b8134bf05c3690745457b3ced35697f3e45f0bf180b73119d478c696", size = 18083 },
 ]

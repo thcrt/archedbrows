@@ -27,6 +27,7 @@ Issues = "https://github.com/thcrt/archedbrows/issues"
 dev = [
     "pyright>=1.1.394",
     "ruff>=0.9.4",
+    "yt-dlp-types>=0.0.14",
 ]
 
 [build-system]
