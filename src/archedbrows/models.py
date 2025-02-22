@@ -65,6 +65,4 @@ class Post(MappedAsDataclass, Model):
 
     @hybrid_property
     def time_ago_added(self) -> str | None:
-        return (
-            humanize.naturaltime(datetime.now() - self.time_added) if self.time_added else None
-        )
+        return humanize.naturaltime(datetime.now() - self.time_added) if self.time_added else None
