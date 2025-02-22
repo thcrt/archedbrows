@@ -66,6 +66,7 @@
 
 @layer theme {
     :root {
+        --palette-slate-0: #ffffff;
         --palette-slate-50: #f8fafc;
         --palette-slate-100: #f1f5f9;
         --palette-slate-200: #e2e8f0;
@@ -92,15 +93,16 @@
 
         --theme-radius: 8px;
 
-        --theme-color-bg: var(--palette-slate-200);
-        --theme-color-bg-alt: var(--palette-slate-300);
-        --theme-color-bg-alt-2: var(--palette-slate-400);
+        --theme-color-bg: var(--palette-slate-0);
+        --theme-color-bg-alt: var(--palette-slate-100);
+        --theme-color-bg-alt-2: var(--palette-slate-200);
         --theme-color-fg: var(--palette-slate-900);
         --theme-color-fg-alt: var(--palette-slate-600);
         --theme-color-fg-alt-2: var(--palette-slate-400);
         --theme-color-primary: var(--palette-green-500);
         --theme-color-primary-alt: var(--palette-green-700);
         --theme-color-primary-alt-2: var(--palette-green-800);
+        --theme-color-primary-select: var(--theme-color-bg);
 
     }
 
@@ -112,6 +114,7 @@
             --theme-color-fg: var(--palette-slate-200);
             --theme-color-fg-alt: var(--palette-slate-400);
             --theme-color-fg-alt-2: var(--palette-slate-600);
+            --theme-color-primary-select: var(--theme-color-fg);
         }
     }
 }
@@ -147,7 +150,7 @@ button,
 
         &:hover,
         &:focus-visible {
-            color: var(--theme-color-fg);
+            color: var(--theme-color-primary-select);
             border-color: var(--theme-color-primary);
             background-color: var(--theme-color-primary-alt);
         }
