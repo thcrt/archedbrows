@@ -1,7 +1,7 @@
 [project]
 name = "archedbrows"
 dynamic = [ "version" ]
-description = "Browse your archived media"
+description = "Save text and media. Browse through your archive."
 readme = "README.md"
 authors = [
     { name = "thcrt", email = "110127860+thcrt@users.noreply.github.com" }
