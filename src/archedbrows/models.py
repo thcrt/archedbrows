@@ -55,7 +55,9 @@ class Post(MappedAsDataclass, Model):
     time_added: Mapped[datetime] = mapped_column(default_factory=datetime.now)
 
     text: Mapped[str | None] = mapped_column(default=None)
-    media: Mapped[list[Media]] = relationship(back_populates="post", default_factory=list)
+    media: Mapped[list[Media]] = relationship(
+        back_populates="post", cascade="all, delete-orphan", default_factory=list
+    )
 
     @hybrid_property
     def time_ago_created(self) -> str | None:

@@ -44,3 +44,10 @@ def edit_post(post_id: int) -> str | Response:
         db.session.commit()
         return redirect(url_for("show_post", post_id=post_id))
     return render_template("edit.html.jinja", post=post)
+
+@current_app.post("/delete/<int:post_id>")
+def delete_post(post_id: int) -> Response:
+    post = db.get_or_404(Post, post_id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for("index"))
