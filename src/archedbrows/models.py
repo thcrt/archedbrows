@@ -58,7 +58,13 @@ class Post(MappedAsDataclass, Model):
     media: Mapped[list[Media]] = relationship(back_populates="post", default_factory=list)
 
     @hybrid_property
-    def time_ago(self) -> str | None:
+    def time_ago_created(self) -> str | None:
         return (
             humanize.naturaltime(datetime.now() - self.time_created) if self.time_created else None
+        )
+
+    @hybrid_property
+    def time_ago_added(self) -> str | None:
+        return (
+            humanize.naturaltime(datetime.now() - self.time_added) if self.time_added else None
         )

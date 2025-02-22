@@ -131,6 +131,8 @@ button,
     border-radius: var(--theme-radius);
     padding: 0.25rem 0.5rem;
     text-decoration: none;
+    display: block;
+    height: fit-content;
 
     color: var(--theme-color-fg-alt);
     border: 1px solid var(--theme-color-fg-alt-2);
@@ -292,52 +294,85 @@ hr {
     }
 }
 
-
-article {
+article.post {
     padding: 0.5rem;
-    border-radius: var(--theme-radius);
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    position: relative;
     width: 50rem;
     max-width: 100svw;
 
-    .title {
-        display: flex;
-        gap: 0.5rem;
-        align-items: end;
+    display: grid;
+    grid-template:
+        "title      buttons" auto
+        "meta       buttons" auto
+        "content    content" auto
+        / 1fr auto;
 
-        h2 {
-            flex-grow: 1;
+    >h2 {
+        grid-area: title;
+
+        font-size: 1.125rem;
+
+        @media (width > 800px) {
             font-size: 1.5rem;
         }
-
     }
 
-    &.edit-post form {
+    >.post-buttons {
+        grid-area: buttons;
         display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
+        gap: 0.25rem;
+    }
 
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
+    >.post-meta {
+        grid-area: meta;
 
-            input {
-                width: 100%;
+        font-size: 0.75rem;
+        color: var(--theme-color-fg-alt);
+
+        a {
+            color: var(--theme-color-fg);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: solid underline;
             }
         }
+
+        time {
+            user-select: none;
+        }
     }
 
-    &.listed-post {
-        &:hover {
-            background-color: var(--theme-color-bg-alt);
-            box-shadow: 0 0 0 1px var(--theme-color-bg-alt-2);
+    >.post-content {
+        margin-block-start: 0.5rem;
+        grid-area: content;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        .post-media,
+        input {
+            width: 100%;
+        }
+    }
+
+    &.post-listed {
+        >.post-meta>*:not(:first-child) {
+            &::before {
+                content: "| ";
+                color: var(--theme-color-fg-alt-2);
+            }
         }
 
-        .content:has(.blur-bg) {
+        &:hover {
+            background-color: var(--theme-color-bg-alt);
+            border-radius: var(--theme-radius);
+            box-shadow: 0 0 0 1px var(--theme-color-bg-alt-2);
+        }
+    }
+
+    /* Presence of `blur-bg` element indicates that media will be resized to a nicer aspect ratio */
+    &:has(>.post-content>.blur-bg) {
+        >.post-content {
             min-height: 10rem;
             height: 25rem;
             overflow: hidden;
@@ -361,90 +396,41 @@ article {
             .post-media {
                 position: absolute;
                 inset: 0;
+                width: auto;
                 max-width: 100%;
                 max-height: 100%;
                 margin: auto;
             }
         }
-
-        .content audio.post-media {
-            width: 100%;
-        }
     }
 
-    &.single-post {
-        .title a.button {
-            padding-inline: 1rem;
-        }
+    /* Presence of <a> inside <h2> title indicates whole post should be clickable */
+    &:has(>h2>a) {
+        /* Set <article> as the containing block */
+        position: relative;
 
-        margin-block: 1rem;
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-block: 1rem;
-            width: 100%;
-        }
-    }
-
-    .meta {
-        font-size: 0.75rem;
-        display: flex;
-        line-height: 0.5;
-
-        time {
-            position: relative;
-            z-index: 50;
-            user-select: none;
-        }
-
-        a {
-            position: relative;
-            z-index: 50;
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: solid underline;
-            }
-        }
-
-        .time,
-        .source {
-            color: var(--theme-color-fg-alt)
-        }
-
-        >*:not(:first-child) {
-            &::before {
-                content: "|";
-                margin-inline: 0.333em;
-            }
-        }
-
-    }
-
-    h2 {
-        font-size: 1rem;
-        text-wrap: inherit;
-
-        @media (width > 800px) {
-            font-size: 1.125rem;
-        }
-
-        a {
+        /* Fix link styling */
+        >h2>a {
             color: inherit;
             text-decoration: none;
+        }
 
-            &::after {
-                content: "";
-                position: absolute;
-                z-index: 1;
-                left: 0;
-                right: 0;
-                top: 0;
-                bottom: 0;
-            }
+        /* Make link expand to size of post */
+        >h2>a::after {
+            content: "";
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        /* Allow interactive elements to be clickable above main post link */
+        >.post-meta a,
+        >.post-meta time {
+            position: relative;
+            z-index: 50;
         }
     }
-
 }
