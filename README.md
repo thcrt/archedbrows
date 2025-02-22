@@ -11,6 +11,9 @@
 ![GitHub Release](https://img.shields.io/github/v/release/thcrt/archedbrows?style=for-the-badge)
 ![Free Palestine Badge](https://img.shields.io/badge/Free%20-%20Palestine%20-%20red?style=for-the-badge)
 
+![image](https://github.com/user-attachments/assets/3de5f307-7c7b-4709-a87f-1a9e9f961ce4)
+
+
 </div>
 
 ## Installation
