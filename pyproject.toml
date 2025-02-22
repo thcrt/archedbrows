@@ -3,6 +3,7 @@ name = "archedbrows"
 dynamic = [ "version" ]
 description = "Save text and media. Browse through your archive."
 readme = "README.md"
+license = "AGPL-3.0-or-later"
 authors = [
     { name = "thcrt", email = "110127860+thcrt@users.noreply.github.com" }
 ]
