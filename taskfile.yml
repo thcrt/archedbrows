@@ -45,10 +45,22 @@ tasks:
         desc: Build Docker container image
         cmd: docker build . -t archedbrows:main 
     
-    dev:
+    run-backend:
+        cmd: uv run flask run
+        hidden: true
+
+    run-frontend:
+        cmd: uv run flask vite start
+        hidden: true
+
+    run:
         desc: Run a development server
-        cmd: uv run flask --app archedbrows run --debug {{.CLI_ARGS}}
-    
+        deps: [run-backend, run-frontend]
+
+    vite:
+        desc: Operate on Vite (use `--` to pass further arguments)
+        cmd: uv run flask vite {{.CLI_ARGS}}
+
     db:
         desc: Operate on database migrations (use `--` to pass further arguments)
-        cmd: uv run flask --app archedbrows db {{.CLI_ARGS}}
+        cmd: uv run flask db {{.CLI_ARGS}}

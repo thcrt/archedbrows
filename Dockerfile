@@ -1,3 +1,16 @@
+FROM node:22-alpine AS assets
+WORKDIR /vite
+
+# Install dependencies
+COPY ./vite/package.json ./vite/package-lock.json ./
+RUN ["npm", "install"]
+
+# Build assets
+COPY ./vite ./
+RUN ["npm", "run", "build"]
+
+####################################################################################################
+
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 WORKDIR /app
 
@@ -30,6 +43,9 @@ ENTRYPOINT []
 
 # Run database migrations
 RUN ["flask", "--app", "archedbrows", "db", "upgrade"]
+
+# Get built assets
+COPY --from=assets /vite/dist ./vite/dist
 
 # Let's run this thing
 CMD ["waitress-serve", "--call", "archedbrows:create_app"]

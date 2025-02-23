@@ -13,6 +13,7 @@ dependencies = [
     "flask>=3.1.0",
     "flask-migrate>=4.1.0",
     "flask-sqlalchemy>=3.1.1",
+    "flask-vite>=0.5.2",
     "gallery-dl-bytes>=2.5.0",
     "humanize>=4.11.0",
     "types-flask-migrate>=4.1.0.20250112",
