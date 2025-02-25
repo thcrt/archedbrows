@@ -7,15 +7,18 @@ export function PostListing({ post }: { post: Post }) {
   return (
     <Card w="100%" maw="60rem" shadow="sm" radius="md" withBorder>
       <Card.Section
-        component="a"
         py="sm"
         inheritPadding
         style={{ textDecoration: "none", color: "inherit" }}
-        href={`/posts/${post.id}`}
       >
-        <Title order={3} fw={500} size="xl">
-          {post.title}
-        </Title>
+        <Anchor
+          style={{ textDecoration: "none", color: "inherit" }}
+          href={`/posts/${post.id}`}
+        >
+          <Title order={3} fw={500} size="xl">
+            {post.title}
+          </Title>
+        </Anchor>
         <Text c="dimmed" size="xs">
           <Anchor>{post.author}</Anchor>{" "}
           <ReactTimeAgo
