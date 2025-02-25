@@ -1,7 +1,9 @@
 import {
+  Anchor,
   AspectRatio,
   Box,
   Card,
+  Group,
   Image,
   Overlay,
   Stack,
@@ -93,6 +95,15 @@ export function PostListing(post: Post) {
         <Title order={3} fw={500} size="xl">
           {post.title}
         </Title>
+        <Text c="dimmed" size="xs">
+          <Anchor>{post.author}</Anchor>{" "}
+          <time title={post.time_created} dateTime={post.time_created}>
+            {post.time_created}
+          </time>{" "}
+          <Anchor href={post.source_url} target="_blank">
+            {post.source}
+          </Anchor>
+        </Text>
       </Card.Section>
 
       <Card.Section>
@@ -121,9 +132,25 @@ export function PostListing(post: Post) {
 export function PostDisplay(post: Post) {
   return (
     <Stack w="100%" maw="80rem" mx="auto">
-      <Title order={3} fw={500} size="xl">
-        {post.title}
-      </Title>
+      <Stack gap="0">
+        <Title order={3} fw={500} size="xl">
+          {post.title}
+        </Title>
+        <Text c="dimmed" size="xs">
+          posted by <Anchor>{post.author}</Anchor> at{" "}
+          <time title={post.time_created} dateTime={post.time_created}>
+            {post.time_created},
+          </time>{" "}
+          archived from{" "}
+          <Anchor href={post.source_url} target="_blank">
+            {post.source}
+          </Anchor>{" "}
+          at{" "}
+          <time title={post.time_added} dateTime={post.time_added}>
+            {post.time_added}
+          </time>
+        </Text>
+      </Stack>
       <PostMedia mediaList={post.media} />
       <Text>{post.text}</Text>
     </Stack>
