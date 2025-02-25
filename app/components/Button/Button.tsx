@@ -10,7 +10,7 @@ interface ActionButtonProps
 
 export function ActionButton(props: ActionButtonProps) {
   return (
-    <ActionIcon h="3rem" fw={500} p="sm" w="auto" {...props}>
+    <ActionIcon h="3rem" fw={500} p="sm" w="auto" miw="3rem" {...props}>
       {props.children}
     </ActionIcon>
   );
@@ -22,7 +22,7 @@ interface LinkButtonProps
 
 export function LinkButton(props: LinkButtonProps) {
   return (
-    <ActionIcon component="a" h="3rem" fw={500} p="sm" w="auto" {...props}>
+    <ActionIcon component="a" h="3rem" fw={500} p="sm" w="auto" miw="3rem" {...props}>
       {props.children}
     </ActionIcon>
   );

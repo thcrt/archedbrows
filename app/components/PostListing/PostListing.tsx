@@ -7,7 +7,7 @@ export function PostListing({ post }: { post: Post }) {
   return (
     <Card w="100%" maw="60rem" shadow="sm" radius="md" withBorder>
       <Card.Section
-        py="sm"
+        pt="sm"
         inheritPadding
         style={{ textDecoration: "none", color: "inherit" }}
       >
@@ -31,9 +31,13 @@ export function PostListing({ post }: { post: Post }) {
         </Text>
       </Card.Section>
 
-      <Card.Section>
-        <MediaObject mediaList={post.media} />
-      </Card.Section>
+      {post.media.length ? (
+        <Card.Section pt="sm">
+          <MediaObject mediaList={post.media} />
+        </Card.Section>
+      ) : (
+        ""
+      )}
 
       {post.text ? (
         <Card.Section
@@ -43,7 +47,7 @@ export function PostListing({ post }: { post: Post }) {
           style={{ textDecoration: "none", color: "inherit" }}
           href={`/posts/${post.id}`}
         >
-          <Text size="sm" c="dimmed">
+          <Text size="sm" c="dimmed" lineClamp={4}>
             {post.text}
           </Text>
         </Card.Section>
