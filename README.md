@@ -1,100 +1,83 @@
-# Welcome to React Router!
+<div align="center">
+  
+# archedbrows
 
-A modern, production-ready template for building full-stack React applications using React Router.
+### save text and media. browse through your archive.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+![UV Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fastral-sh%2Fuv%2Frefs%2Fheads%2Fmain%2Fassets%2Fbadge%2Fv0.json&style=for-the-badge)
+![Python Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fthcrt%2Farchedbrows%2Frefs%2Fheads%2Fmain%2F.python-version&query=%24&style=for-the-badge&label=Python)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/thcrt/archedbrows/build.yml?branch=main&style=for-the-badge&link=https%3A%2F%2Fgithub.com%2Fthcrt%2Farchedbrows%2Fpkgs%2Fcontainer%2Farchedbrows)
+![GitHub License](https://img.shields.io/github/license/thcrt/archedbrows?style=for-the-badge&link=https%3A%2F%2Fgithub.com%2Fthcrt%2Farchedbrows%2Fblob%2Fmain%2FLICENSE)
+![GitHub Release](https://img.shields.io/github/v/release/thcrt/archedbrows?style=for-the-badge)
+![Free Palestine Badge](https://img.shields.io/badge/Free%20-%20Palestine%20-%20red?style=for-the-badge)
 
-## Features
+![image](https://github.com/user-attachments/assets/3de5f307-7c7b-4709-a87f-1a9e9f961ce4)
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+</div>
 
-## Getting Started
+## Installation
 
-### Installation
+### With Docker
 
-Install the dependencies:
+Images are published to GHCR with every release. Pull the latest tagged release with `ghcr.io/thcrt/archedbrows:latest`. or a bleeding-edge build from the `main` branch with `ghcr.io/thcrt/archedbrows:main`.
 
-```bash
-npm install
+A SQLite database is initialised as part of the build process, located in the container at `/app/src/instance/project.db`. To make data persistent, you should mount `/app/src/instance` to a bind mount or Docker volume.
+
+The image runs on port `8080` by default, which can be mapped to whichever host port you like. Even better, you can run Caddy, Traefik or Nginx on the same Docker network as a reverse proxy, and hence avoid exposing anything directly to the internet.
+
+An example command to serve on port `80` and persist data in the Docker volume `abdata` might look like this:
+
+```shell
+docker run -p 80:8080 -v abdata:/app/src/instance ghcr.io/thcrt/archedbrows:latest
 ```
 
-### Development
+If you later upgrade the container image to a newer version, you must run migrations. Assuming the same Docker volume name, we can do that like so:
 
-Start the development server with HMR:
-
-```bash
-npm run dev
+```shell
+docker run -v abdata:/app/src/instance ghcr.io/thcrt/archedbrows:latest flask --app archedbrows db upgrade
 ```
 
-Your application will be available at `http://localhost:5173`.
+### From source
 
-## Building for Production
+You'll need [`uv`](https://docs.astral.sh/uv/), used as a package and project manager.
 
-Create a production build:
+This project also uses [`task`](https://taskfile.dev/) as a task runner to save repeated typing on the command-line. You don't technically need to use it, and you can read `taskfile.yml` to see which commands to run manually, but this guide assumes you have it installed.
 
-```bash
-npm run build
+To begin, clone the repository, install dependencies and initialise a database:
+
+```shell
+git clone git@github.com:thcrt/archedbrows.git
+cd archedbrows
+uv sync
+task db -- upgrade
 ```
 
-## Deployment
+Now you're ready to bring up a development environment:
 
-### Docker Deployment
-
-This template includes three Dockerfiles optimized for different package managers:
-
-- `Dockerfile` - for npm
-- `Dockerfile.pnpm` - for pnpm
-- `Dockerfile.bun` - for bun
-
-To build and run using Docker:
-
-```bash
-# For npm
-docker build -t my-app .
-
-# For pnpm
-docker build -f Dockerfile.pnpm -t my-app .
-
-# For bun
-docker build -f Dockerfile.bun -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+```shell
+task dev
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+Note that the development server is for debugging purposes, and may not be used in production. To run in production, I strongly recommend Docker, but you can also do it yourself with:
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+```shell
+uv run waitress-serve --call archedbrows:create_app
 ```
 
-## Styling
+If you later pull a newer version of the code, you must run migrations. Do that the same way you initialised the database:
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+```shell
+task db -- upgrade
+```
 
----
+If you modify the code, please make sure to run linting, formatting and type-checking, and correct any issues that may arise:
 
-Built with ❤️ using React Router.
+```shell
+task check
+```
+
+## Licensing
+
+This project is available under the AGPLv3, available at [`./LICENSE`](./LICENSE).
+
+It includes the vector graphic "eyebrow" by Harianto, from <a href="https://thenounproject.com/browse/icons/term/eyebrow/">the Noun Project</a> (CC BY 3.0).

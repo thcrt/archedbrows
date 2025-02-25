@@ -1,18 +1,27 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { Route } from "./routes/+types/_index";
+import { Shell } from "./shell";
 
 import "./app.css";
 import {
   ColorSchemeScript,
   MantineProvider,
   mantineHtmlProps,
+  Loader,
+  Center,
 } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 
 export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Archedbrows" },
-  ];
+  return [{ title: "archedbrows" }];
+}
+
+export function HydrateFallback() {
+  return (
+    <Center pos="fixed" h="100%" w="100%">
+      <Loader color="currentColor" size="xl" />
+    </Center>
+  );
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -27,7 +36,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <MantineProvider defaultColorScheme="auto">
-          <ModalsProvider>{children}</ModalsProvider>
+          <ModalsProvider>
+            <Shell>{children}</Shell>
+          </ModalsProvider>
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />
