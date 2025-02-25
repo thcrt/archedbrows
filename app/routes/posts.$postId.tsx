@@ -38,10 +38,7 @@ export default function ShowPost({ loaderData }: Route.ComponentProps) {
         </>
       }
       buttons={
-        <LinkButton
-          href={`/posts/${post.id}/edit`}
-          variant="default"
-        >
+        <LinkButton href={`/posts/${post.id}/edit`} variant="default">
           <IconPencil />
         </LinkButton>
       }

@@ -12,9 +12,15 @@ import type { Route } from "./routes/+types/_index";
 import { Shell } from "./shell";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { DatesProvider } from "@mantine/dates";
+
+dayjs.extend(customParseFormat);
 
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import "@mantine/dates/styles.css";
 
 TimeAgo.addDefaultLocale(en);
 
@@ -47,7 +53,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <MantineProvider theme={theme} defaultColorScheme="auto">
           <ModalsProvider>
-            <Shell>{children}</Shell>
+            <DatesProvider settings={{}}>
+              <Shell>{children}</Shell>
+            </DatesProvider>
           </ModalsProvider>
         </MantineProvider>
         <ScrollRestoration />

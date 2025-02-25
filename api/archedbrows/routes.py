@@ -1,3 +1,4 @@
+from datetime import datetime
 from http import HTTPStatus
 from io import BytesIO
 from typing import Any
@@ -41,6 +42,8 @@ def show_post(post_id: int) -> dict[str, Any]:
 def edit_post(post_id: int) -> Response:
     post = db.get_or_404(Post, post_id)
     for key, val in request.form.items():
+        if key in ("time_created", "time_added"):
+            val = datetime.fromisoformat(val)
         if hasattr(post, key):
             setattr(post, key, val)
     db.session.commit()
