@@ -10,14 +10,13 @@ import {
 import { ModalsProvider } from "@mantine/modals";
 import type { Route } from "./routes/+types/_index";
 import { Shell } from "./shell";
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
 
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 
-TimeAgo.addDefaultLocale(en)
-
+TimeAgo.addDefaultLocale(en);
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: "archedbrows" }];

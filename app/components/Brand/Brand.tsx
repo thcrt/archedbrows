@@ -1,5 +1,5 @@
 import { Title } from "@mantine/core";
-import classes from "./brand.module.css";
+import classes from "./Brand.module.css";
 
 export function Brand() {
   return (

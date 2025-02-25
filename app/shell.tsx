@@ -1,6 +1,6 @@
 import { AppShell, Flex } from "@mantine/core";
-import { Brand } from "./components/brand/brand";
-import { CreateButton } from "./components/createbutton/createbutton";
+import { Brand } from "./components/Brand/Brand";
+import { CreatePostButton } from "./components/CreatePostButton/CreatePostButton";
 
 export function Shell({ children }: { children: React.ReactNode }) {
   return (
@@ -8,7 +8,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <AppShell.Header>
         <Flex justify="space-between" align="center" h="100%" px="xs">
           <Brand />
-          <CreateButton />
+          <CreatePostButton />
         </Flex>
       </AppShell.Header>
 

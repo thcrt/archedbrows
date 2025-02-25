@@ -2,7 +2,7 @@ import { ActionIcon, TextInput } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 
-export function CreateButton() {
+export function CreatePostButton() {
   const addPost = () =>
     modals.open({
       title: "Add post",
