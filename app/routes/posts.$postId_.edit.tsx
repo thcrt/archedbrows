@@ -1,12 +1,11 @@
 import type { Post } from "~/api";
 import type { Route } from "./+types/posts.$postId_.edit";
 import { PostDisplay } from "~/components/PostDisplay/PostDisplay";
-import { Group, Stack, Text, Title, ActionIcon } from "@mantine/core";
 import {
   IconDeviceFloppy,
   IconTrash,
-  IconArrowLeft,
 } from "@tabler/icons-react";
+import { ActionButton, LinkButton } from "~/components/Button/Button";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const res = await fetch(`/api/posts/${params.postId}`);
@@ -23,18 +22,12 @@ export default function ShowPost({ loaderData }: Route.ComponentProps) {
       back={`/posts/${post.id}`}
       buttons={
         <>
-          <ActionIcon component="a" h="100%" w="auto" px="sm" color="red">
+          <LinkButton color="red" href="#">
             <IconTrash />
-          </ActionIcon>
-          <ActionIcon
-            component="a"
-            display="block"
-            h="100%"
-            w="5.6rem"
-            color="green"
-          >
+          </LinkButton>
+          <ActionButton color="green" w="5.6rem" onClick={() => alert("saved!")}>
             <IconDeviceFloppy />
-          </ActionIcon>
+          </ActionButton>
         </>
       }
     >

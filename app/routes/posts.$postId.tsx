@@ -5,6 +5,7 @@ import ReactTimeAgo from "react-time-ago";
 import type { Post } from "~/api";
 import { IconPencil } from "@tabler/icons-react";
 import { MediaObject } from "~/components/MediaObject/MediaObject";
+import { LinkButton } from "~/components/Button/Button";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const res = await fetch(`/api/posts/${params.postId}`);
@@ -37,16 +38,12 @@ export default function ShowPost({ loaderData }: Route.ComponentProps) {
         </>
       }
       buttons={
-        <ActionIcon
-          component="a"
+        <LinkButton
           href={`/posts/${post.id}/edit`}
-          h="100%"
-          w="auto"
-          px="sm"
           variant="default"
         >
           <IconPencil />
-        </ActionIcon>
+        </LinkButton>
       }
     >
       <MediaObject mediaList={post.media} />

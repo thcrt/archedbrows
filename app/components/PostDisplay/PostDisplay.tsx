@@ -1,5 +1,6 @@
 import { ActionIcon, Group, Stack, Text, Title } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
+import { LinkButton } from "../Button/Button";
 
 export function PostDisplay({
   back,
@@ -23,19 +24,15 @@ export function PostDisplay({
         h="3rem"
       >
         {back ? (
-          <ActionIcon
-            component="a"
-            h="100%"
+          <LinkButton
             href={back}
             pos="absolute"
             left="-4rem"
-            w="auto"
-            px="sm"
             variant="subtle"
             color="grey"
           >
             <IconArrowLeft />
-          </ActionIcon>
+          </LinkButton>
         ) : (
           ""
         )}

@@ -1,6 +1,7 @@
 import { ActionIcon, TextInput } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
+import { ActionButton } from "../Button/Button";
 
 export function CreatePostButton() {
   const addPost = () =>
@@ -20,7 +21,7 @@ export function CreatePostButton() {
                 type="submit"
                 variant="filled"
                 color="green"
-                size="var(--input-height)"
+                size="100%"
                 radius="0 var(--input-radius) var(--input-radius) 0"
               >
                 <IconPlus />
@@ -32,14 +33,8 @@ export function CreatePostButton() {
     });
 
   return (
-    <ActionIcon
-      onClick={addPost}
-      variant="filled"
-      color="green"
-      w="3rem"
-      h="2rem"
-    >
-      <IconPlus />
-    </ActionIcon>
+    <ActionButton onClick={addPost} color="green">
+      <IconPlus stroke={4} />
+    </ActionButton>
   );
 }
