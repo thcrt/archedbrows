@@ -1,3 +1,4 @@
+import { Title } from "@mantine/core";
 import classes from "./brand.module.css";
 
 export function Brand() {
@@ -15,7 +16,9 @@ export function Brand() {
           fill-rule="evenodd"
         />
       </svg>
-      <h1 className={classes.name}>archedbrows</h1>
+      <Title lh={1} fw={500} size="var(--mantine-spacing-xl)">
+        archedbrows
+      </Title>
     </a>
   );
 }

@@ -6,6 +6,7 @@ import {
   Overlay,
   Stack,
   Text,
+  Title,
 } from "@mantine/core";
 import type { Media, Post } from "~/api";
 import { Carousel } from "@mantine/carousel";
@@ -89,9 +90,9 @@ export function PostListing(post: Post) {
         style={{ textDecoration: "none", color: "inherit" }}
         href={`/posts/${post.id}`}
       >
-        <Text size="lg" fw={500}>
+        <Title order={3} fw={500} size="xl">
           {post.title}
-        </Text>
+        </Title>
       </Card.Section>
 
       <Card.Section>
@@ -120,9 +121,9 @@ export function PostListing(post: Post) {
 export function PostDisplay(post: Post) {
   return (
     <Stack w="100%" maw="80rem" mx="auto">
-      <Text size="xl" fw={500}>
+      <Title order={3} fw={500} size="xl">
         {post.title}
-      </Text>
+      </Title>
       <PostMedia mediaList={post.media} />
       <Text>{post.text}</Text>
     </Stack>
