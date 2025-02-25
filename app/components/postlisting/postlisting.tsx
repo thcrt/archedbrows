@@ -81,7 +81,7 @@ export function PostMedia(props: { mediaList: Media[] }) {
 
 export function PostListing(post: Post) {
   return (
-    <Card w="60rem" shadow="sm" radius="md" withBorder>
+    <Card w="100%" maw="60rem" shadow="sm" radius="md" withBorder>
       <Card.Section
         component="a"
         py="sm"
@@ -119,7 +119,7 @@ export function PostListing(post: Post) {
 
 export function PostDisplay(post: Post) {
   return (
-    <Stack w="50%" mx="auto">
+    <Stack w="100%" maw="80rem" mx="auto">
       <Text size="xl" fw={500}>
         {post.title}
       </Text>

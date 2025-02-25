@@ -1,4 +1,3 @@
-import { Shell } from "../shell";
 import type { Post } from "~/api";
 import type { Route } from "./+types/posts.$postId";
 import { PostDisplay } from "~/components/postlisting/postlisting";

@@ -1,10 +1,9 @@
 import type { Route } from "./+types/_index";
-import { Shell } from "../shell";
 import type { Post } from "~/api";
 import { PostListing } from "~/components/postlisting/postlisting";
 import { Stack } from "@mantine/core";
 
-export async function clientLoader() {
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const res = await fetch(`/api/posts`);
   const posts: Post[] = await res.json();
   return posts;
