@@ -10,6 +10,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import ReactTimeAgo from "react-time-ago";
 import type { Media, Post } from "~/api";
 import { Carousel } from "@mantine/carousel";
 
@@ -97,9 +98,10 @@ export function PostListing(post: Post) {
         </Title>
         <Text c="dimmed" size="xs">
           <Anchor>{post.author}</Anchor>{" "}
-          <time title={post.time_created} dateTime={post.time_created}>
-            {post.time_created}
-          </time>{" "}
+          <ReactTimeAgo
+            date={new Date(post.time_created!)}
+            timeStyle="round-minute"
+          />{" "}
           <Anchor href={post.source_url} target="_blank">
             {post.source}
           </Anchor>
@@ -137,18 +139,16 @@ export function PostDisplay(post: Post) {
           {post.title}
         </Title>
         <Text c="dimmed" size="xs">
-          posted by <Anchor>{post.author}</Anchor> at{" "}
-          <time title={post.time_created} dateTime={post.time_created}>
-            {post.time_created},
-          </time>{" "}
-          archived from{" "}
+          posted by <Anchor>{post.author}</Anchor>{" "}
+          <ReactTimeAgo
+            date={new Date(post.time_created!)}
+            timeStyle="round-minute"
+          />
+          , archived from{" "}
           <Anchor href={post.source_url} target="_blank">
             {post.source}
           </Anchor>{" "}
-          at{" "}
-          <time title={post.time_added} dateTime={post.time_added}>
-            {post.time_added}
-          </time>
+          <ReactTimeAgo date={new Date(post.time_added!)} timeStyle="round-minute"/>{" "}
         </Text>
       </Stack>
       <PostMedia mediaList={post.media} />
