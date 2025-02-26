@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import StrEnum, auto
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import humanize
 from sqlalchemy import ForeignKey
@@ -41,6 +41,13 @@ class Media(MappedAsDataclass, Model):
         else:
             return None
 
+    def to_dict(self) -> dict[str, int | str | None]:
+        return {
+            "id": self.id,
+            "filename": self.filename,
+            "type": self.type,
+        }
+
 
 class Post(MappedAsDataclass, Model):
     __tablename__ = "posts"
@@ -58,6 +65,19 @@ class Post(MappedAsDataclass, Model):
     media: Mapped[list[Media]] = relationship(
         back_populates="post", cascade="all, delete-orphan", default_factory=list
     )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "source": self.source,
+            "source_url": self.source_url,
+            "title": self.title,
+            "author": self.author,
+            "time_created": self.time_created.isoformat() if self.time_created else None,
+            "time_added": self.time_added.isoformat(),
+            "text": self.text,
+            "media": [media.to_dict() for media in self.media],
+        }
 
     @hybrid_property
     def time_ago_created(self) -> str | None:

@@ -13,6 +13,7 @@ dependencies = [
     "flask>=3.1.0",
     "flask-migrate>=4.1.0",
     "flask-sqlalchemy>=3.1.1",
+    "flask-vite>=0.5.2",
     "gallery-dl-bytes>=2.5.0",
     "humanize>=4.11.0",
     "types-flask-migrate>=4.1.0.20250112",
@@ -27,6 +28,7 @@ Issues = "https://github.com/thcrt/archedbrows/issues"
 [dependency-groups]
 dev = [
     "pyright>=1.1.394",
+    "python-dotenv>=1.0.1",
     "ruff>=0.9.4",
     "yt-dlp-types>=0.0.14",
 ]
@@ -37,10 +39,11 @@ build-backend = "hatchling.build"
 
 [tool.hatch]
 version.source = "vcs"
-build.hooks.vcs.version-file = "src/archedbrows/_version.py"
+build.hooks.vcs.version-file = "api/archedbrows/_version.py"
+build.packages = ["api/archedbrows"]
 
 [tool.pyright]
-include = ["src"]
+include = ["api/archedbrows"]
 strict = ["**/*"]
 ignore = ["**/_version.py"]
 deprecateTypingAliases = true

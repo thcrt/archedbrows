@@ -2,53 +2,182 @@
 
 version: "3"
 
+env:
+  PROJECT_VERSION:
+    sh: uvx hatch version
+  TAG_VERSION:
+    sh: echo {{ .PROJECT_VERSION }} | tr '+' '.'
+  TAG_BRANCH:
+    sh: git branch --show-current
+
 tasks:
-    default:
-        # If no task is specified, we use the magic variable `TASK_EXE` to call `task` again with `--list`.
-        # See https://github.com/go-task/task/issues/1562.
-        silent: true
-        cmds:
-            - "{{.TASK_EXE}} --list"
+  default:
+    # If no task is specified, we use the magic variable `TASK_EXE` to call `task` again with `--list`.
+    # See https://github.com/go-task/task/issues/1562.
+    silent: true
+    cmds:
+      - "{{.TASK_EXE}} --list"
 
-    check-linting:
-        desc: Run linting and apply fixes automatically
-        cmd: uv run ruff check --fix
-        sources:
-            - src/**/*.py
-            - exclude: src/**/_version.py
-            - exclude: ./**/__pycache__/**/*
+  install-api-deps:
+    hidden: true
+    sources:
+      - ./pyproject.toml
+      - ./uv.lock
+    cmd: uv sync --no-install-project
 
-    check-types:
-        desc: Run type checking
-        cmd: uv run pyright
-        sources:
-            - src/**/*.py
-            - exclude: src/**/_version.py
-            - exclude: ./**/__pycache__/**/*
+  install-web-deps:
+    hidden: true
+    sources:
+      - ./package.json
+      - ./pnpm-lock.yaml
+    cmd: pnpm install
 
-    check-format:
-        desc: Apply standardised formatting fixes
-        cmd: uv run ruff format
-        sources:
-            - src/**/*.py
-            - exclude: src/**/_version.py
-            - exclude: ./**/__pycache__/**/*
+  check-api-lint:
+    hidden: true
+    deps: [install-api-deps]
+    sources:
+      - ./api/**/*
+      - ./migrations/**/*
+      - exclude: ./api/instance/**/*
+      - exclude: ./**/_version.py
+      - exclude: ./**/__pycache__/**/*
+    cmd: uv run ruff check --fix
 
-    check:
-        desc: Run all checks
-        cmds:
-            - task: check-linting
-            - task: check-types
-            - task: check-format
-    
-    build:
-        desc: Build Docker container image
-        cmd: docker build . -t archedbrows:main 
-    
-    dev:
-        desc: Run a development server
-        cmd: uv run flask --app archedbrows run --debug {{.CLI_ARGS}}
-    
-    db:
-        desc: Operate on database migrations (use `--` to pass further arguments)
-        cmd: uv run flask --app archedbrows db {{.CLI_ARGS}}
+  check-api-types:
+    hidden: true
+    deps: [install-api-deps]
+    sources:
+      - ./api/**/*
+      - ./migrations/**/*
+      - exclude: ./api/instance/**/*
+      - exclude: ./**/_version.py
+      - exclude: ./**/__pycache__/**/*
+    cmd: uv run pyright
+
+  check-api-format:
+    hidden: true
+    deps: [install-api-deps]
+    sources:
+      - ./api/**/*
+      - ./migrations/**/*
+      - exclude: ./api/instance/**/*
+      - exclude: ./**/_version.py
+      - exclude: ./**/__pycache__/**/*
+    cmd: uv run ruff format
+
+  check-web-types:
+    hidden: true
+    deps: [install-web-deps]
+    sources:
+      - ./app/**/*
+    cmd: pnpm run typecheck
+
+  check-non-python-format:
+    hidden: true
+    deps: [install-web-deps]
+    sources:
+      - ./app/**/*
+      - ./public/**/*
+      - ./scripts/**/*
+      - ./*
+      - exclude: ./uv.lock
+      - exclude: ./pnpm-lock.yaml
+    cmd: pnpm run format
+
+  check:
+    desc: Run all checks, applying formatting and linting fixes automatically
+    cmds:
+      - task: check-api-lint
+      - task: check-api-types
+      - task: check-api-format
+      - task: check-web-types
+      - task: check-non-python-format
+
+  build-docker-api:
+    hidden: true
+    interactive: true
+    cmd: >
+      docker build
+      --progress=quiet
+      --file server.Dockerfile
+      --tag archedbrows-server:{{ .TAG_VERSION }}
+      --tag archedbrows-server:{{ .TAG_BRANCH }}
+      --build-arg PROJECT_VERSION={{ .PROJECT_VERSION }}
+      .
+      && echo archedbrows-server:{{ .TAG_VERSION }}
+      && echo archedbrows-server:{{ .TAG_BRANCH }}
+
+  build-docker-web:
+    hidden: true
+    interactive: true
+    cmd: >
+      docker build
+      --progress=quiet
+      --file web.Dockerfile
+      --tag archedbrows-web:{{ .TAG_VERSION }}
+      --tag archedbrows-web:{{ .TAG_BRANCH }}
+      --build-arg PROJECT_VERSION={{ .PROJECT_VERSION }}
+      .
+      && echo archedbrows-web:{{ .TAG_VERSION }}
+      && echo archedbrows-web:{{ .TAG_BRANCH }}
+
+  build-docker:
+    desc: Build Docker container image
+    deps: [build-docker-api, build-docker-web]
+
+  build-web:
+    desc: Build web assets
+    deps: [install-web-deps]
+    sources:
+      - ./app/**/*
+      - ./public/**/*
+      - ./package.json
+      - ./react-router.config.ts
+      - ./tsconfig.json
+      - ./vite.config.js
+    cmd: pnpm run build
+
+  dev-api:
+    hidden: true
+    deps: [install-api-deps]
+    cmd: uv run flask run --no-debugger
+
+  dev-web:
+    hidden: true
+    deps: [install-web-deps]
+    cmd: pnpm dev
+
+  dev:
+    desc: Run a development server
+    deps: [dev-api, dev-web]
+
+  serve-api:
+    hidden: true
+    deps: [install-api-deps]
+    cmd: uv run waitress-serve --port 8001 --call archedbrows:create_app
+
+  serve-web:
+    hidden: true
+    deps: [build-web]
+    cmd: PORT=8000 pnpm start
+
+  serve-proxy:
+    hidden: true
+    cmd: caddy serve
+
+  serve:
+    desc: Run a preview of a production server
+    deps: [serve-api, serve-web, serve-proxy]
+
+  clean:
+    desc: Clean all ephemeral and build files (excluding database sqlite file)
+    cmd: >
+      rm -rf
+      ./.react-router
+      ./.ruff_cache
+      ./.task
+      ./.venv
+      ./build
+      ./node_modules
+      ./**/__pycache__/**/*
+      ./**/_version.py

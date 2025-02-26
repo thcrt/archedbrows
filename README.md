@@ -13,7 +13,6 @@
 
 ![image](https://github.com/user-attachments/assets/3de5f307-7c7b-4709-a87f-1a9e9f961ce4)
 
-
 </div>
 
 ## Installation
@@ -22,9 +21,9 @@
 
 Images are published to GHCR with every release. Pull the latest tagged release with `ghcr.io/thcrt/archedbrows:latest`. or a bleeding-edge build from the `main` branch with `ghcr.io/thcrt/archedbrows:main`.
 
-A SQLite database is initialised as part of the build process, located in the container at `/app/src/instance/project.db`. To make data persistent, you should mount `/app/src/instance` to a bind mount or Docker volume. 
+A SQLite database is initialised as part of the build process, located in the container at `/app/src/instance/project.db`. To make data persistent, you should mount `/app/src/instance` to a bind mount or Docker volume.
 
-The image runs on port `8080` by default, which can be mapped to whichever host port you like. Even better, you can run Caddy, Traefik or Nginx on the same Docker network as a reverse proxy, and hence avoid exposing anything directly to the internet. 
+The image runs on port `8080` by default, which can be mapped to whichever host port you like. Even better, you can run Caddy, Traefik or Nginx on the same Docker network as a reverse proxy, and hence avoid exposing anything directly to the internet.
 
 An example command to serve on port `80` and persist data in the Docker volume `abdata` might look like this:
 
