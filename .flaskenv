@@ -1,2 +1,1 @@
 FLASK_APP=archedbrows
-FLASK_DEBUG=True

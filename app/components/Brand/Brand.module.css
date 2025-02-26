@@ -1,0 +1,10 @@
+.link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  gap: var(--mantine-spacing-xs);
+}
+
+.logo {
+  height: var(--mantine-spacing-xl);
+}
