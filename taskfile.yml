@@ -2,7 +2,6 @@
 
 version: "3"
 
-
 env:
   PROJECT_VERSION:
     sh: uvx hatch version
@@ -10,7 +9,6 @@ env:
     sh: echo {{ .PROJECT_VERSION }} | tr '+' '.'
   TAG_BRANCH:
     sh: git branch --show-current
-
 
 tasks:
   default:
@@ -94,7 +92,7 @@ tasks:
       - task: check-api-format
       - task: check-web-types
       - task: check-non-python-format
-  
+
   build-docker-api:
     hidden: true
     interactive: true
@@ -108,7 +106,7 @@ tasks:
       .
       && echo archedbrows-server:{{ .TAG_VERSION }}
       && echo archedbrows-server:{{ .TAG_BRANCH }}
-  
+
   build-docker-web:
     hidden: true
     interactive: true
