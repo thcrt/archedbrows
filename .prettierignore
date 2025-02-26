@@ -1,3 +1,21 @@
-# Ignore artifacts:
-build
-coverage
+# React router
+.react-router/
+
+# Build artifacts
+build/
+dist/
+wheels/
+_version.py
+
+# Installed dependencies
+node_modules/
+.venv/
+
+# Caches
+.task/
+.*_cache/
+__pycache__/
+*.py[oc]
+
+# Instance data
+api/instance/

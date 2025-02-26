@@ -38,10 +38,9 @@ export function PostDisplay({
 
         <Stack
           gap="0"
-          style={{alignSelf: "center", justifyContent: "space-between" }}
+          style={{ alignSelf: "center", justifyContent: "space-between" }}
           h="100%"
           mr="auto"
-          
         >
           <Title my="auto" order={3} fw={500} size="xl">
             {title}
