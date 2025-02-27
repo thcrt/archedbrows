@@ -6,7 +6,7 @@ from archedbrows.downloader.common import InfoDict, content_to_title
 from archedbrows.models import Post
 
 
-def parse_post(url: str, info: InfoDict) -> Post:
+def parse_post(url: str, info: InfoDict) -> Post:  # noqa: C901, PLR0911, PLR0912, PLR0915
     # Handle federated software with multiple instances, marked by a 'foo:' prefix
     if url.startswith("mastodon:") or info["category"] == "mastodon.social":
         username = info["account"]["username"]

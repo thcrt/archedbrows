@@ -1,4 +1,4 @@
-import { ActionIcon, Group, Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Text, Title } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { LinkButton } from "../Button/Button";
 
@@ -16,7 +16,11 @@ export function PostDisplay({
   children: React.ReactNode;
 }) {
   return (
-    <Stack w="100%" maw="80rem" mx="auto">
+    <Stack
+      w="100%"
+      maw="80rem"
+      mx="auto"
+    >
       <Group
         style={{ alignItems: "start", flexWrap: "nowrap" }}
         pos="relative"
@@ -42,11 +46,19 @@ export function PostDisplay({
           h="100%"
           mr="auto"
         >
-          <Title my="auto" order={3} fw={500} size="xl">
+          <Title
+            my="auto"
+            order={3}
+            fw={500}
+            size="xl"
+          >
             {title}
           </Title>
           {meta ? (
-            <Text c="dimmed" size="xs">
+            <Text
+              c="dimmed"
+              size="xs"
+            >
               {meta}
             </Text>
           ) : (

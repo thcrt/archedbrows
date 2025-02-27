@@ -9,7 +9,7 @@ from archedbrows.models import Media, Post
 
 from .metadata import parse_post
 
-set_config(("extractor",), "metadata", True)
+set_config(("extractor",), "metadata", value=True)
 set_config(("extractor",), "browser", "firefox")
 
 

@@ -1,4 +1,4 @@
-"""Distinguish date added and date created
+"""Distinguish date added and date created.
 
 Revision ID: e334241b3252
 Revises: 970413d7fe82

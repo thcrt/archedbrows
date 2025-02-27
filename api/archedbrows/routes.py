@@ -20,8 +20,7 @@ def show_media(media_id: int) -> Response:
 @current_app.get("/posts")
 def index() -> list[dict[str, Any]]:
     posts = db.session.execute(db.select(Post).order_by(Post.time_added.desc())).scalars()
-    posts = [post.to_dict() for post in posts]
-    return posts
+    return [post.to_dict() for post in posts]
 
 
 @current_app.post("/posts/add")
@@ -42,10 +41,11 @@ def show_post(post_id: int) -> dict[str, Any]:
 def edit_post(post_id: int) -> Response:
     post = db.get_or_404(Post, post_id)
     for key, val in request.form.items():
+        new_val = val
         if key in ("time_created", "time_added"):
-            val = datetime.fromisoformat(val)
+            new_val = datetime.fromisoformat(val)
         if hasattr(post, key):
-            setattr(post, key, val)
+            setattr(post, key, new_val)
     db.session.commit()
     return Response(status=HTTPStatus.NO_CONTENT)
 

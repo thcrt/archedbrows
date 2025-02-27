@@ -1,4 +1,4 @@
-export type Post = {
+export interface Post {
   id: number;
   source: string;
   source_url: string;
@@ -8,10 +8,10 @@ export type Post = {
   time_added: string;
   text?: string;
   media: Media[];
-};
+}
 
-export type Media = {
+export interface Media {
   id: number;
   filename?: string;
   type?: string;
-};
+}

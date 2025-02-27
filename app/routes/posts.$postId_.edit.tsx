@@ -12,11 +12,11 @@ import { Stack, TextInput } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import validator from "validator";
-import { useFetcher, useParams } from "react-router";
+import { useFetcher } from "react-router";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const res = await fetch(`/api/posts/${params.postId}`);
-  const post: Post = await res.json();
+  const post = (await res.json()) as Post;
   return post;
 }
 
@@ -35,11 +35,13 @@ export async function clientAction({
 
 export default function ShowPost({ loaderData }: Route.ComponentProps) {
   const post = loaderData;
-  let fetcher = useFetcher();
-  let form = useForm({
+  const fetcher = useFetcher();
+  const form = useForm({
     initialValues: {
       ...post,
-      time_created: new Date(post.time_created! + ""),
+      time_created: post.time_created
+        ? new Date(post.time_created + "")
+        : undefined,
     },
     validateInputOnChange: true,
 
@@ -52,14 +54,21 @@ export default function ShowPost({ loaderData }: Route.ComponentProps) {
   return (
     <fetcher.Form method="post">
       <PostDisplay
-        title={`Editing post #${post.id}`}
-        back={`/posts/${post.id}`}
+        title={`Editing post #${post.id.toString()}`}
+        back={`/posts/${post.id.toString()}`}
         buttons={
           <>
-            <LinkButton color="red" href="#">
+            <LinkButton
+              color="red"
+              href="#"
+            >
               <IconTrash />
             </LinkButton>
-            <ActionButton color="green" w="5.6rem" type="submit">
+            <ActionButton
+              color="green"
+              w="5.6rem"
+              type="submit"
+            >
               <IconDeviceFloppy />
             </ActionButton>
           </>

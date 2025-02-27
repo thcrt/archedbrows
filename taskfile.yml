@@ -2,6 +2,9 @@
 
 version: "3"
 
+set: [errexit, nounset, pipefail]
+shopt: [globstar]
+
 env:
   PROJECT_VERSION:
     sh: uvx hatch version
@@ -32,14 +35,23 @@ tasks:
       - ./pnpm-lock.yaml
     cmd: pnpm install
 
+  gen-web-types:
+    hidden: true
+    deps: [install-web-deps]
+    sources:
+      - ./app/**/*
+      - ./public/**/*
+      - ./*
+    cmd: pnpm run typegen
+
   check-api-lint:
     hidden: true
     deps: [install-api-deps]
     sources:
+      - ./pyproject.toml
       - ./api/**/*
       - ./migrations/**/*
       - exclude: ./api/instance/**/*
-      - exclude: ./**/_version.py
       - exclude: ./**/__pycache__/**/*
     cmd: uv run ruff check --fix
 
@@ -47,10 +59,10 @@ tasks:
     hidden: true
     deps: [install-api-deps]
     sources:
+      - ./pyproject.toml
       - ./api/**/*
       - ./migrations/**/*
       - exclude: ./api/instance/**/*
-      - exclude: ./**/_version.py
       - exclude: ./**/__pycache__/**/*
     cmd: uv run pyright
 
@@ -58,18 +70,29 @@ tasks:
     hidden: true
     deps: [install-api-deps]
     sources:
+      - ./pyproject.toml
       - ./api/**/*
       - ./migrations/**/*
       - exclude: ./api/instance/**/*
-      - exclude: ./**/_version.py
       - exclude: ./**/__pycache__/**/*
     cmd: uv run ruff format
 
-  check-web-types:
+  check-web-lint:
     hidden: true
-    deps: [install-web-deps]
+    deps: [gen-web-types]
     sources:
       - ./app/**/*
+      - ./public/**/*
+      - ./*
+    cmd: pnpm run lint
+
+  check-web-types:
+    hidden: true
+    deps: [gen-web-types]
+    sources:
+      - ./app/**/*
+      - ./public/**/*
+      - ./*
     cmd: pnpm run typecheck
 
   check-non-python-format:
@@ -78,10 +101,7 @@ tasks:
     sources:
       - ./app/**/*
       - ./public/**/*
-      - ./scripts/**/*
       - ./*
-      - exclude: ./uv.lock
-      - exclude: ./pnpm-lock.yaml
     cmd: pnpm run format
 
   check:
@@ -90,6 +110,7 @@ tasks:
       - task: check-api-lint
       - task: check-api-types
       - task: check-api-format
+      - task: check-web-lint
       - task: check-web-types
       - task: check-non-python-format
 
@@ -131,10 +152,7 @@ tasks:
     sources:
       - ./app/**/*
       - ./public/**/*
-      - ./package.json
-      - ./react-router.config.ts
-      - ./tsconfig.json
-      - ./vite.config.js
+      - ./*
     cmd: pnpm run build
 
   dev-api:
@@ -163,7 +181,7 @@ tasks:
 
   serve-proxy:
     hidden: true
-    cmd: caddy serve
+    cmd: caddy run
 
   serve:
     desc: Run a preview of a production server
@@ -173,11 +191,11 @@ tasks:
     desc: Clean all ephemeral and build files (excluding database sqlite file)
     cmd: >
       rm -rf
-      ./.react-router
-      ./.ruff_cache
-      ./.task
-      ./.venv
-      ./build
-      ./node_modules
-      ./**/__pycache__/**/*
+      ./.react-router/
+      ./.ruff_cache/
+      ./.task/
+      ./.venv/
+      ./build/
+      ./node_modules/
+      ./**/__pycache__/
       ./**/_version.py

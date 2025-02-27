@@ -1,5 +1,6 @@
 import mimetypes
 from contextlib import redirect_stdout
+from http import HTTPStatus
 from typing import TYPE_CHECKING, cast, override
 
 from yt_dlp import YoutubeDL
@@ -43,18 +44,16 @@ class YTDLPDownloader(Downloader):
     @override
     def run(self) -> Post:
         with MultipleFileBuffer() as buffer:
-            assert "progress_hooks" in self.options
-            self.options["progress_hooks"].append(buffer.callback)
+            self.options["progress_hooks"].append(buffer.callback)  # pyright: ignore[reportTypedDictNotRequiredAccess]
 
             with redirect_stdout(buffer):  # type: ignore[type-var]
                 try:
                     meta = self._run()
                 except DownloadError as e:
-                    assert isinstance(e, DownloadError)
                     if (
                         e.exc_info
                         and isinstance(e.exc_info[1], HTTPError)
-                        and e.exc_info[1].status == 403
+                        and e.exc_info[1].status == HTTPStatus.FORBIDDEN
                     ):
                         # Try again, but pretend to be a human
                         self.options.update(IMPERSONATE_OPTIONS)

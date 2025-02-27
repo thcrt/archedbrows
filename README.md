@@ -19,19 +19,28 @@
 
 ### With Docker
 
-Images are published to GHCR with every release. Pull the latest tagged release with `ghcr.io/thcrt/archedbrows:latest`. or a bleeding-edge build from the `main` branch with `ghcr.io/thcrt/archedbrows:main`.
+Images are published to GHCR with every release. Pull the latest tagged release
+with `ghcr.io/thcrt/archedbrows:latest`. or a bleeding-edge build from the
+`main` branch with `ghcr.io/thcrt/archedbrows:main`.
 
-A SQLite database is initialised as part of the build process, located in the container at `/app/src/instance/project.db`. To make data persistent, you should mount `/app/src/instance` to a bind mount or Docker volume.
+A SQLite database is initialised as part of the build process, located in the
+container at `/app/src/instance/project.db`. To make data persistent, you should
+mount `/app/src/instance` to a bind mount or Docker volume.
 
-The image runs on port `8080` by default, which can be mapped to whichever host port you like. Even better, you can run Caddy, Traefik or Nginx on the same Docker network as a reverse proxy, and hence avoid exposing anything directly to the internet.
+The image runs on port `8080` by default, which can be mapped to whichever host
+port you like. Even better, you can run Caddy, Traefik or Nginx on the same
+Docker network as a reverse proxy, and hence avoid exposing anything directly to
+the internet.
 
-An example command to serve on port `80` and persist data in the Docker volume `abdata` might look like this:
+An example command to serve on port `80` and persist data in the Docker volume
+`abdata` might look like this:
 
 ```shell
 docker run -p 80:8080 -v abdata:/app/src/instance ghcr.io/thcrt/archedbrows:latest
 ```
 
-If you later upgrade the container image to a newer version, you must run migrations. Assuming the same Docker volume name, we can do that like so:
+If you later upgrade the container image to a newer version, you must run
+migrations. Assuming the same Docker volume name, we can do that like so:
 
 ```shell
 docker run -v abdata:/app/src/instance ghcr.io/thcrt/archedbrows:latest flask --app archedbrows db upgrade
@@ -39,9 +48,13 @@ docker run -v abdata:/app/src/instance ghcr.io/thcrt/archedbrows:latest flask --
 
 ### From source
 
-You'll need [`uv`](https://docs.astral.sh/uv/), used as a package and project manager.
+You'll need [`uv`](https://docs.astral.sh/uv/), used as a package and project
+manager.
 
-This project also uses [`task`](https://taskfile.dev/) as a task runner to save repeated typing on the command-line. You don't technically need to use it, and you can read `taskfile.yml` to see which commands to run manually, but this guide assumes you have it installed.
+This project also uses [`task`](https://taskfile.dev/) as a task runner to save
+repeated typing on the command-line. You don't technically need to use it, and
+you can read `taskfile.yml` to see which commands to run manually, but this
+guide assumes you have it installed.
 
 To begin, clone the repository, install dependencies and initialise a database:
 
@@ -58,19 +71,23 @@ Now you're ready to bring up a development environment:
 task dev
 ```
 
-Note that the development server is for debugging purposes, and may not be used in production. To run in production, I strongly recommend Docker, but you can also do it yourself with:
+Note that the development server is for debugging purposes, and may not be used
+in production. To run in production, I strongly recommend Docker, but you can
+also do it yourself with:
 
 ```shell
 uv run waitress-serve --call archedbrows:create_app
 ```
 
-If you later pull a newer version of the code, you must run migrations. Do that the same way you initialised the database:
+If you later pull a newer version of the code, you must run migrations. Do that
+the same way you initialised the database:
 
 ```shell
 task db -- upgrade
 ```
 
-If you modify the code, please make sure to run linting, formatting and type-checking, and correct any issues that may arise:
+If you modify the code, please make sure to run linting, formatting and
+type-checking, and correct any issues that may arise:
 
 ```shell
 task check
@@ -78,6 +95,9 @@ task check
 
 ## Licensing
 
-This project is available under the AGPLv3, available at [`./LICENSE`](./LICENSE).
+This project is available under the AGPLv3, available at
+[`./LICENSE`](./LICENSE).
 
-It includes the vector graphic "eyebrow" by Harianto, from <a href="https://thenounproject.com/browse/icons/term/eyebrow/">the Noun Project</a> (CC BY 3.0).
+It includes the vector graphic "eyebrow" by Harianto, from
+<a href="https://thenounproject.com/browse/icons/term/eyebrow/">the Noun
+Project</a> (CC BY 3.0).

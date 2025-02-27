@@ -10,7 +10,14 @@ interface ActionButtonProps
 
 export function ActionButton(props: ActionButtonProps) {
   return (
-    <ActionIcon h="3rem" fw={500} p="sm" w="auto" miw="3rem" {...props}>
+    <ActionIcon
+      h="3rem"
+      fw={500}
+      p="sm"
+      w="auto"
+      miw="3rem"
+      {...props}
+    >
       {props.children}
     </ActionIcon>
   );

@@ -9,7 +9,10 @@ export function CreatePostButton() {
       title: "Add post",
       size: "xl",
       children: (
-        <form method="post" action="/api/posts/add">
+        <form
+          method="post"
+          action="/api/posts/add"
+        >
           <TextInput
             label="URL"
             size="md"
@@ -33,7 +36,10 @@ export function CreatePostButton() {
     });
 
   return (
-    <ActionButton onClick={addPost} color="green">
+    <ActionButton
+      onClick={addPost}
+      color="green"
+    >
       <IconPlus stroke={4} />
     </ActionButton>
   );

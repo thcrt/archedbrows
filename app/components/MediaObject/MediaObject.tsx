@@ -13,16 +13,16 @@ function MediaDisplay(props: { media: Media }) {
         <Image
           style={{ zIndex: 1 }}
           fit="contain"
-          src={`/api/media/${props.media.id}`}
+          src={`/api/media/${props.media.id.toString()}`}
         />
       );
-      bgUrl = `/api/media/${props.media.id}`;
+      bgUrl = `/api/media/${props.media.id.toString()}`;
       break;
     case "video":
       media = (
         <video
           style={{ objectFit: "contain", marginBottom: "-0.5rem" }}
-          src={`/api/media/${props.media.id}`}
+          src={`/api/media/${props.media.id.toString()}`}
           controls
         />
       );
@@ -31,7 +31,7 @@ function MediaDisplay(props: { media: Media }) {
       media = (
         <audio
           style={{ objectFit: "contain" }}
-          src={`/api/media/${props.media.id}`}
+          src={`/api/media/${props.media.id.toString()}`}
           controls
         />
       );
@@ -42,9 +42,20 @@ function MediaDisplay(props: { media: Media }) {
 
   return (
     <AspectRatio ratio={3 / 2}>
-      <Box pos="absolute" style={{ zIndex: -1 }}>
-        <Image h="100%" w="100%" src={bgUrl} />
-        <Overlay color="#000" backgroundOpacity={0.35} blur={15} />
+      <Box
+        pos="absolute"
+        style={{ zIndex: -1 }}
+      >
+        <Image
+          h="100%"
+          w="100%"
+          src={bgUrl}
+        />
+        <Overlay
+          color="#000"
+          backgroundOpacity={0.35}
+          blur={15}
+        />
       </Box>
       {media}
     </AspectRatio>
@@ -62,7 +73,10 @@ export function MediaObject(props: { mediaList: Media[] }) {
     return;
   } else if (props.mediaList.length === 1) {
     return (
-      <Box pos="relative" style={{ zIndex: 0 }}>
+      <Box
+        pos="relative"
+        style={{ zIndex: 0 }}
+      >
         <MediaDisplay media={props.mediaList[0]} />
       </Box>
     );

@@ -38,8 +38,7 @@ class Media(MappedAsDataclass, Model):
         main_type = self.mime_type.split("/", 1)[0].lower()
         if main_type in self.MediaType:
             return self.MediaType(main_type)
-        else:
-            return None
+        return None
 
     def to_dict(self) -> dict[str, int | str | None]:
         return {

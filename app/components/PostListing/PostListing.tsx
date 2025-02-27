@@ -5,7 +5,13 @@ import { MediaObject } from "../MediaObject/MediaObject";
 
 export function PostListing({ post }: { post: Post }) {
   return (
-    <Card w="100%" maw="60rem" shadow="sm" radius="md" withBorder>
+    <Card
+      w="100%"
+      maw="60rem"
+      shadow="sm"
+      radius="md"
+      withBorder
+    >
       <Card.Section
         pt="sm"
         inheritPadding
@@ -13,19 +19,33 @@ export function PostListing({ post }: { post: Post }) {
       >
         <Anchor
           style={{ textDecoration: "none", color: "inherit" }}
-          href={`/posts/${post.id}`}
+          href={`/posts/${post.id.toString()}`}
         >
-          <Title order={3} fw={500} size="xl">
+          <Title
+            order={3}
+            fw={500}
+            size="xl"
+          >
             {post.title}
           </Title>
         </Anchor>
-        <Text c="dimmed" size="xs">
+        <Text
+          c="dimmed"
+          size="xs"
+        >
           <Anchor>{post.author}</Anchor>{" "}
-          <ReactTimeAgo
-            date={new Date(post.time_created!)}
-            timeStyle="round-minute"
-          />{" "}
-          <Anchor href={post.source_url} target="_blank">
+          {post.time_created ? (
+            <ReactTimeAgo
+              date={new Date(post.time_created)}
+              timeStyle="round-minute"
+            />
+          ) : (
+            ""
+          )}{" "}
+          <Anchor
+            href={post.source_url}
+            target="_blank"
+          >
             {post.source}
           </Anchor>
         </Text>
@@ -45,9 +65,13 @@ export function PostListing({ post }: { post: Post }) {
           py="sm"
           inheritPadding
           style={{ textDecoration: "none", color: "inherit" }}
-          href={`/posts/${post.id}`}
+          href={`/posts/${post.id.toString()}`}
         >
-          <Text size="sm" c="dimmed" lineClamp={4}>
+          <Text
+            size="sm"
+            c="dimmed"
+            lineClamp={4}
+          >
             {post.text}
           </Text>
         </Card.Section>

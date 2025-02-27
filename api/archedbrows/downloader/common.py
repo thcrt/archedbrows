@@ -15,7 +15,7 @@ type InfoDict = dict[str, Any]
 
 
 class Downloader(ABC):
-    def __init__(self, url: str):
+    def __init__(self, url: str) -> None:
         self.url = url
 
     @abstractmethod

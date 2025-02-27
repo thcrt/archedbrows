@@ -84,14 +84,14 @@ def run_migrations_online() -> None:
     # when there are no changes to the schema
     # reference: https://alembic.sqlalchemy.org/en/latest/cookbook.html#don-t-generate-empty-migrations-with-autogenerate
     def process_revision_directives(
-        context: MigrationContext,
-        revision: str | Iterable[str | None] | Iterable[str],
+        _context: MigrationContext,
+        _revision: str | Iterable[str | None] | Iterable[str],
         directives: list[MigrationScript],
     ) -> None:
-        assert config.cmd_opts is not None
         if getattr(config.cmd_opts, "autogenerate", False):
             script = directives[0]
-            assert script.upgrade_ops is not None
+            if script.upgrade_ops is None:
+                raise ValueError
             if script.upgrade_ops.is_empty():
                 directives[:] = []
                 logger.info("No changes in schema detected.")

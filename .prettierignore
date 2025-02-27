@@ -19,3 +19,7 @@ __pycache__/
 
 # Instance data
 api/instance/
+
+# Lock files
+uv.lock
+pnpm-lock.yaml
