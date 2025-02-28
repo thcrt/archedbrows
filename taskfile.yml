@@ -187,6 +187,11 @@ tasks:
     desc: Run a preview of a production server
     deps: [serve-api, serve-web, serve-proxy]
 
+  run-migrations:
+    desc: Run database ./migrations/**/*
+    deps: [install-api-deps]
+    cmd: uv run flask --app archedbrows db upgrade
+
   clean:
     desc: Clean all ephemeral and build files (excluding database sqlite file)
     cmd: >

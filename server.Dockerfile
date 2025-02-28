@@ -2,6 +2,13 @@ ARG PYTHON_VERSION="3.13.2"
 ARG ALPINE_VERSION="3.21"
 ARG UV_VERSION="0.6.0"
 
+# Current project version, determined by `hatch-vcs`
+ARG PROJECT_VERSION="0.0.0"
+# Port to run on
+ARG PROJECT_PORT="8001"
+# User to run as
+ARG PROJECT_USER="1000"
+
 # We need to explicitly define this as a stage in order to copy from it, since `COPY --from` doesn't
 # take variables defined in `ARG` 
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
@@ -10,14 +17,8 @@ FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
 FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION} AS build
 WORKDIR /app
 
-# Current project version, determined by `hatch-vcs`
-ARG PROJECT_VERSION="0.0.0"
-# Port to run on
-ARG PROJECT_PORT="8001"
-# User to run as
-ARG PROJECT_USER="1000"
-
 # Workaround to pass the current project version (determined by `hatch-vcs`)
+ARG PROJECT_VERSION
 ENV SETUPTOOLS_SCM_PRETEND_VERSION=${PROJECT_VERSION}
 
 # Enable bytecode compilation
@@ -56,13 +57,18 @@ ENV PATH="/app/.venv/bin:$PATH"
 RUN --mount=type=bind,source=./migrations,target=./migrations \
     ["flask", "--app", "archedbrows", "db", "upgrade"]
 
-# Run application
-CMD ["waitress-serve", "--port", "${PROJECT_PORT}", "--call", "archedbrows:create_app"]
-
+ARG PROJECT_PORT
 ARG PROJECT_VERSION
+    
+# Run application
+USER ${PROJECT_USER}
+ENV PORT=${PROJECT_PORT}
+CMD waitress-serve --port "$PORT" --call archedbrows:create_app
+
+EXPOSE ${PROJECT_PORT}
 LABEL org.opencontainers.image.authors="Theo Court (thcrt) <oss@theocourt.com>"
 LABEL org.opencontainers.image.source="https://github.com/thcrt/archedbrows/"
-LABEL org.opencontainers.image.version="${PROJECT_VERSION}"
+LABEL org.opencontainers.image.version=${PROJECT_VERSION}
 LABEL org.opencontainers.image.licenses="AGPL-3.0-or-later"
 LABEL org.opencontainers.image.title="archedbrows (server)"
 LABEL org.opencontainers.image.description="save text and media. browse through your archive."
