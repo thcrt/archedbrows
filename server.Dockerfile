@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION="3.13.2"
-ARG ALPINE_VERSION="3.21"
+ARG DEBIAN_VERSION="slim-bullseye"
 ARG UV_VERSION="0.6.0"
 
 # Current project version, determined by `hatch-vcs`
@@ -14,7 +14,7 @@ ARG PROJECT_USER="1000"
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
 
 # Build stage with source code copied ##############################################################
-FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION} AS build
+FROM python:${PYTHON_VERSION}-${DEBIAN_VERSION} AS build
 WORKDIR /app
 
 # Workaround to pass the current project version (determined by `hatch-vcs`)
@@ -46,7 +46,7 @@ RUN --mount=type=cache,target=/opt/uv-cache \
     uv sync --frozen --no-dev --no-editable
 
 # Prod run stage without `uv` or source code #######################################################
-FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION} AS prod
+FROM python:${PYTHON_VERSION}-${DEBIAN_VERSION} AS prod
 WORKDIR /app
 
 # `uv` has already built the package, so we don't need to copy the source code here
@@ -59,6 +59,7 @@ RUN --mount=type=bind,source=./migrations,target=./migrations \
 
 ARG PROJECT_PORT
 ARG PROJECT_VERSION
+ARG PROJECT_USER
     
 # Run application
 USER ${PROJECT_USER}
