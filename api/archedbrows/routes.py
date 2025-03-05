@@ -8,17 +8,33 @@ from werkzeug import Response
 
 from . import db
 from .downloader import download_post
-from .models import Media, Post
+from .models import THUMBNAIL_TYPE, Media, Post
 
 
 @current_app.route("/media/<int:media_id>")
-def show_media(media_id: int) -> Response:
-    media = db.get_or_404(Media, media_id)
-    return send_file(BytesIO(media.data), mimetype=media.mime_type, download_name=media.filename)
+def media(media_id: int) -> Response:
+    media_obj = db.get_or_404(Media, media_id)
+    return send_file(
+        BytesIO(media_obj.data),
+        download_name=media_obj.filename,
+        mimetype=media_obj.mime_type,
+    )
+
+
+@current_app.route("/media/<int:media_id>/thumb")
+def thumb(media_id: int) -> Response:
+    media_obj = db.get_or_404(Media, media_id)
+    if media_obj.thumb:
+        return send_file(
+            BytesIO(media_obj.thumb),
+            download_name=f"thumb_{media_obj.filename}",
+            mimetype=f"image/{THUMBNAIL_TYPE}",
+        )
+    return media(media_id=media_id)
 
 
 @current_app.route("/posts", methods=["GET", "POST"])
-def index() -> Response:
+def posts() -> Response:
     match request.method:
         case "GET":
             posts = db.session.execute(db.select(Post).order_by(Post.time_added.desc())).scalars()

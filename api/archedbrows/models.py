@@ -1,7 +1,10 @@
 from datetime import datetime
 from enum import StrEnum, auto
-from typing import TYPE_CHECKING, Any
+from io import BytesIO
+from typing import TYPE_CHECKING, Any, cast
 
+import av
+import av.container
 import humanize
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -15,6 +18,10 @@ else:
     Model = db.Model
 
 
+THUMBNAIL_MAX_DIMENSIONS = (1024, 1024)
+THUMBNAIL_TYPE = "JPEG"
+
+
 class Media(MappedAsDataclass, Model):
     class MediaType(StrEnum):
         AUDIO = auto()
@@ -25,10 +32,26 @@ class Media(MappedAsDataclass, Model):
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     data: Mapped[bytes]
+    thumb: Mapped[bytes | None] = mapped_column(default=None)
     filename: Mapped[str | None] = mapped_column(default=None)
     mime_type: Mapped[str | None] = mapped_column(default=None)
     post_id: Mapped[int | None] = mapped_column(ForeignKey("posts.id"), default=None)
     post: Mapped["Post | None"] = relationship(back_populates="media", default=None)
+
+    def __post_init__(self) -> None:
+        self.generate_thumb()
+
+    def generate_thumb(self) -> None:
+        if self.type == self.MediaType.VIDEO:
+            with BytesIO(self.data) as data, av.open(data) as container, BytesIO() as thumb:
+                container = cast(av.container.InputContainer, container)
+                video = container.streams.video[0]
+                video.codec_context.skip_frame = "NONKEY"
+
+                frame = next(container.decode(video)).to_image()
+                frame.thumbnail(THUMBNAIL_MAX_DIMENSIONS)
+                frame.save(thumb, format=THUMBNAIL_TYPE)
+                self.thumb = thumb.getvalue()
 
     @hybrid_property
     def type(self) -> MediaType | None:

@@ -16,7 +16,7 @@ function MediaDisplay(props: { media: Media }) {
           src={`/api/media/${props.media.id.toString()}`}
         />
       );
-      bgUrl = `/api/media/${props.media.id.toString()}`;
+      bgUrl = `/api/media/${props.media.id.toString()}/thumb`;
       break;
     case "video":
       media = (
@@ -26,6 +26,7 @@ function MediaDisplay(props: { media: Media }) {
           controls
         />
       );
+      bgUrl = `/api/media/${props.media.id.toString()}/thumb`;
       break;
     case "audio":
       media = (
