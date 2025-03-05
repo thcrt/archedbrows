@@ -5,14 +5,14 @@ import {
   IconCalendarClock,
   IconDeviceFloppy,
   IconLink,
-  IconTrash,
 } from "@tabler/icons-react";
-import { ActionButton, LinkButton } from "~/components/Button/Button";
+import { ActionButton } from "~/components/Button/Button";
 import { Stack, TextInput } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import validator from "validator";
-import { useFetcher } from "react-router";
+import { redirect, useFetcher } from "react-router";
+import DeletePostButton from "~/components/DeletePostButton/DeletePostButton";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const res = await fetch(`/api/posts/${params.postId}`);
@@ -26,16 +26,38 @@ export async function clientAction({
 }: Route.ClientActionArgs) {
   const data = await request.formData();
   const id = params.postId;
-  const res = await fetch(`/api/posts/${id}/edit`, {
-    method: "POST",
-    body: data,
-  });
-  return res;
+  const intent = data.get("intent");
+
+  // Prevent intent being passed to backend as field to update
+  data.delete("intent");
+
+  if (intent === "edit") {
+    return await fetch(`/api/posts/${id}/edit`, {
+      method: "POST",
+      body: data,
+    });
+  } else if (intent === "delete") {
+    const confirmation = data.get("confirmation");
+    if (
+      typeof confirmation === "string" &&
+      confirmation.toLowerCase() === "delete"
+    ) {
+      await fetch(`/api/posts/${id}/delete`, {
+        method: "POST",
+      });
+      return redirect("/");
+    } else {
+      return { ok: false, error: "Please confirm deletion" };
+    }
+  } else {
+    throw new Error(`Invalid intent!`);
+  }
 }
 
 export default function ShowPost({ loaderData }: Route.ComponentProps) {
   const post = loaderData;
   const fetcher = useFetcher();
+
   const form = useForm({
     initialValues: {
       ...post,
@@ -58,16 +80,13 @@ export default function ShowPost({ loaderData }: Route.ComponentProps) {
         back={`/posts/${post.id.toString()}`}
         buttons={
           <>
-            <LinkButton
-              color="red"
-              href="#"
-            >
-              <IconTrash />
-            </LinkButton>
+            <DeletePostButton />
             <ActionButton
               color="green"
               w="5.6rem"
               type="submit"
+              name="intent"
+              value="edit"
             >
               <IconDeviceFloppy />
             </ActionButton>
