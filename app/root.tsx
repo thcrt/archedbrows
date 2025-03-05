@@ -7,7 +7,6 @@ import {
   Center,
   createTheme,
 } from "@mantine/core";
-import { ModalsProvider } from "@mantine/modals";
 import { Shell } from "./shell";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
@@ -67,11 +66,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           theme={theme}
           defaultColorScheme="auto"
         >
-          <ModalsProvider>
-            <DatesProvider settings={{}}>
-              <Shell>{children}</Shell>
-            </DatesProvider>
-          </ModalsProvider>
+          <DatesProvider settings={{}}>
+            <Shell>{children}</Shell>
+          </DatesProvider>
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />

@@ -1,14 +1,26 @@
-import { ActionIcon, TextInput } from "@mantine/core";
+import { ActionIcon, TextInput, Modal } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { modals } from "@mantine/modals";
 import { ActionButton } from "../Button/Button";
+import { useDisclosure } from "@mantine/hooks";
 
-export function CreatePostButton() {
-  const addPost = () =>
-    modals.open({
-      title: "Add post",
-      size: "xl",
-      children: (
+export default function CreatePostButton() {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  return (
+    <>
+      <ActionButton
+        onClick={open}
+        color="green"
+      >
+        <IconPlus stroke={4} />
+      </ActionButton>
+
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Add post"
+        size="xl"
+      >
         <form
           method="post"
           action="/api/posts/add"
@@ -32,15 +44,7 @@ export function CreatePostButton() {
             }
           />
         </form>
-      ),
-    });
-
-  return (
-    <ActionButton
-      onClick={addPost}
-      color="green"
-    >
-      <IconPlus stroke={4} />
-    </ActionButton>
+      </Modal>
+    </>
   );
 }

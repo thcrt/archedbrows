@@ -1,6 +1,6 @@
 import { AppShell, Flex } from "@mantine/core";
 import { Brand } from "./components/Brand/Brand";
-import { CreatePostButton } from "./components/CreatePostButton/CreatePostButton";
+import CreatePostButton from "./components/CreatePostButton/CreatePostButton";
 
 export function Shell({ children }: { children: React.ReactNode }) {
   return (
