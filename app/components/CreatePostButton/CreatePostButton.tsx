@@ -23,7 +23,7 @@ export default function CreatePostButton() {
       >
         <form
           method="post"
-          action="/api/posts/add"
+          action="/api/posts"
         >
           <TextInput
             label="URL"

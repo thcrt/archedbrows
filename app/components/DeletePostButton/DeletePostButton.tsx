@@ -10,6 +10,7 @@ export default function DeletePostButton() {
 
   let confirmDeletionError = false;
   if (
+    fetcher.data &&
     "error" in fetcher.data &&
     (fetcher.data as { ok: boolean; error: string }).error ===
       "Please confirm deletion"

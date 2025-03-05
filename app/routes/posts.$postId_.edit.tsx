@@ -32,8 +32,8 @@ export async function clientAction({
   data.delete("intent");
 
   if (intent === "edit") {
-    return await fetch(`/api/posts/${id}/edit`, {
-      method: "POST",
+    return await fetch(`/api/posts/${id}`, {
+      method: "PATCH",
       body: data,
     });
   } else if (intent === "delete") {
@@ -42,8 +42,8 @@ export async function clientAction({
       typeof confirmation === "string" &&
       confirmation.toLowerCase() === "delete"
     ) {
-      await fetch(`/api/posts/${id}/delete`, {
-        method: "POST",
+      await fetch(`/api/posts/${id}`, {
+        method: "DELETE",
       });
       return redirect("/");
     } else {
