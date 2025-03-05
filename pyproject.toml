@@ -13,12 +13,10 @@ dependencies = [
   "flask>=3.1.0",
   "flask-migrate>=4.1.0",
   "flask-sqlalchemy>=3.1.1",
-  "flask-vite>=0.5.2",
   "gallery-dl-bytes>=2.5.0",
   "humanize>=4.11.0",
   "pillow>=11.1.0",
   "pyav>=14.2.1",
-  "types-flask-migrate>=4.1.0.20250112",
   "waitress>=3.0.2",
   "yt-dlp[curl-cffi,default]>=2025.1.26",
 ]
@@ -33,6 +31,7 @@ dev = [
   "python-dotenv>=1.0.1",
   "ruff>=0.9.4",
   "yt-dlp-types>=0.0.14",
+  "types-flask-migrate>=4.1.0.20250112",
 ]
 
 [build-system]
