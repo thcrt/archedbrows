@@ -54,8 +54,8 @@ COPY --from=build /app/.venv ./.venv
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Run database migrations
-RUN --mount=type=bind,source=./migrations,target=./migrations \
-    ["flask", "--app", "archedbrows", "db", "upgrade"]
+COPY ./migrations ./migrations
+RUN ["flask", "--app", "archedbrows", "db", "upgrade"]
 
 ARG PROJECT_PORT
 ARG PROJECT_VERSION
