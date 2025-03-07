@@ -22,6 +22,7 @@ export function Brand() {
       <Title
         lh={1}
         fw={500}
+        visibleFrom="xs"
         size="var(--mantine-spacing-xl)"
       >
         archedbrows

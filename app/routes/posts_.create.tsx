@@ -15,6 +15,7 @@ import {
   Textarea,
   Group,
   Paper,
+  Input,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -110,10 +111,7 @@ export default function ShowPost() {
           </>
         }
       >
-        <Stack
-          h="100%"
-          pb="xl"
-        >
+        <Stack h="100%">
           <TextInput
             label="Title"
             name="title"
@@ -153,7 +151,6 @@ export default function ShowPost() {
             style={{
               flexGrow: 1,
             }}
-            pb="2rem"
             styles={{
               wrapper: {
                 height: "100%",
@@ -174,55 +171,60 @@ export default function ShowPost() {
             hidden
             ref={mediaInput}
           />
-          <Dropzone
-            onDrop={(newMedia) => {
-              setMedia([...media, ...newMedia]);
-              if (mediaInput.current?.files) {
-                const dt = new DataTransfer();
-                for (const m of [...mediaInput.current.files, ...newMedia]) {
-                  dt.items.add(m);
-                }
-                mediaInput.current.files = dt.files;
-              }
-            }}
+          <Input.Wrapper
+            label="Media"
+            labelProps={{ mb: "0.25rem" }}
           >
-            <Stack
-              align="center"
-              justify="center"
-              mih="12rem"
-              gap="xs"
-              style={{ pointerEvents: "none" }}
+            <Dropzone
+              onDrop={(newMedia) => {
+                setMedia([...media, ...newMedia]);
+                if (mediaInput.current?.files) {
+                  const dt = new DataTransfer();
+                  for (const m of [...mediaInput.current.files, ...newMedia]) {
+                    dt.items.add(m);
+                  }
+                  mediaInput.current.files = dt.files;
+                }
+              }}
             >
-              <Dropzone.Accept>
-                <IconUpload
-                  size={52}
-                  color="var(--mantine-color-blue-6)"
-                  stroke={1.5}
-                />
-              </Dropzone.Accept>
-              <Dropzone.Reject>
-                <IconX
-                  size={52}
-                  color="var(--mantine-color-red-6)"
-                  stroke={1.5}
-                />
-              </Dropzone.Reject>
-              <Dropzone.Idle>
-                <Group>
-                  {previews.length === 0 ? (
-                    <IconPhoto
-                      size={52}
-                      color="var(--mantine-color-dimmed)"
-                      stroke={1.5}
-                    />
-                  ) : (
-                    previews
-                  )}
-                </Group>
-              </Dropzone.Idle>
-              <Text c="dimmed">Drag files here or click to add media</Text>
-            </Stack>
-          </Dropzone>
+              <Stack
+                align="center"
+                justify="center"
+                mih="12rem"
+                gap="xs"
+                style={{ pointerEvents: "none" }}
+              >
+                <Dropzone.Accept>
+                  <IconUpload
+                    size={52}
+                    color="var(--mantine-color-blue-6)"
+                    stroke={1.5}
+                  />
+                </Dropzone.Accept>
+                <Dropzone.Reject>
+                  <IconX
+                    size={52}
+                    color="var(--mantine-color-red-6)"
+                    stroke={1.5}
+                  />
+                </Dropzone.Reject>
+                <Dropzone.Idle>
+                  <Group>
+                    {previews.length === 0 ? (
+                      <IconPhoto
+                        size={52}
+                        color="var(--mantine-color-dimmed)"
+                        stroke={1.5}
+                      />
+                    ) : (
+                      previews
+                    )}
+                  </Group>
+                </Dropzone.Idle>
+                <Text c="dimmed">Drag files here or click to add media</Text>
+              </Stack>
+            </Dropzone>
+          </Input.Wrapper>
         </Stack>
       </PostDisplay>
     </form>

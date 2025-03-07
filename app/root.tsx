@@ -101,7 +101,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body
         style={{
-          height: "100svh",
+          height: "100%",
         }}
       >
         <MantineProvider

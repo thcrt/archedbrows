@@ -32,7 +32,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </Flex>
       </AppShell.Header>
 
-      <AppShell.Main h="100%">{children}</AppShell.Main>
+      <AppShell.Main
+        h="100%"
+      >
+        {children}
+      </AppShell.Main>
     </AppShell>
   );
 }
