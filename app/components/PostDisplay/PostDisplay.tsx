@@ -1,6 +1,14 @@
-import { Group, Stack, Text, Title } from "@mantine/core";
+import { Group, Stack, Text, Title, type StackProps } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { LinkButton } from "../Button/Button";
+
+interface PostDisplayProps extends StackProps {
+  back?: string;
+  title: string;
+  meta?: React.ReactNode;
+  buttons: React.ReactNode;
+  children: React.ReactNode;
+}
 
 export function PostDisplay({
   back,
@@ -8,18 +16,14 @@ export function PostDisplay({
   meta,
   buttons,
   children,
-}: {
-  back?: string;
-  title: string;
-  meta?: React.ReactNode;
-  buttons: React.ReactNode;
-  children: React.ReactNode;
-}) {
+  ...props
+}: PostDisplayProps) {
   return (
     <Stack
       w="100%"
       maw="80rem"
       mx="auto"
+      {...props}
     >
       <Group
         style={{ alignItems: "start", flexWrap: "nowrap" }}

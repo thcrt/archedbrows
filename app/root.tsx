@@ -19,6 +19,7 @@ dayjs.extend(customParseFormat);
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
+import "@mantine/dropzone/styles.css";
 
 TimeAgo.addDefaultLocale(en);
 
@@ -61,7 +62,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body
+        style={{
+          height: "100svh",
+        }}
+      >
         <MantineProvider
           theme={theme}
           defaultColorScheme="auto"

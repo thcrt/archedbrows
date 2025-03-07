@@ -1,3 +1,4 @@
+from dataclasses import fields
 from datetime import datetime
 from http import HTTPStatus
 from http.client import IM_A_TEAPOT
@@ -9,6 +10,8 @@ from werkzeug import Response
 from . import db
 from .downloader import download_post
 from .models import THUMBNAIL_TYPE, Media, Post
+
+post_fields = {field.name: field for field in fields(Post)}
 
 
 @current_app.route("/media/<int:media_id>")
@@ -40,7 +43,25 @@ def posts() -> Response:
             posts = db.session.execute(db.select(Post).order_by(Post.time_added.desc())).scalars()
             return make_response([post.to_dict() for post in posts])
         case "POST":
-            post = download_post(request.form["url"])
+            if "auto" in request.form:
+                post = download_post(request.form["url"])
+            else:
+                post = Post(
+                    source=request.form["source"],
+                    source_url=request.form["source_url"],
+                    title=request.form["title"],
+                    author=request.form["author"],
+                    time_created=(
+                        datetime.fromisoformat(request.form["time_created"])
+                        if request.form["time_created"]
+                        else None
+                    ),
+                    text=request.form["text"],
+                )
+                for file in request.files.getlist("media"):
+                    post.media.append(
+                        Media(file.stream.read(), filename=file.filename, mime_type=file.mimetype)
+                    )
             db.session.add(post)
             db.session.commit()
             return Response(status=HTTPStatus.CREATED)

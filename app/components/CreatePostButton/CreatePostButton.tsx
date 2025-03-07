@@ -1,4 +1,4 @@
-import { ActionIcon, TextInput, Modal } from "@mantine/core";
+import { ActionIcon, TextInput, Modal, Input } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { ActionButton } from "../Button/Button";
 import { useDisclosure } from "@mantine/hooks";
@@ -11,6 +11,7 @@ export default function CreatePostButton() {
       <ActionButton
         onClick={open}
         color="green"
+        w="8rem"
       >
         <IconPlus stroke={4} />
       </ActionButton>
@@ -25,6 +26,11 @@ export default function CreatePostButton() {
           method="post"
           action="/api/posts"
         >
+          <Input
+            type="hidden"
+            name="auto"
+            value=""
+          ></Input>
           <TextInput
             label="URL"
             size="md"
