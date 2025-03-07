@@ -1,0 +1,23 @@
+{
+  "name": "archedbrows",
+  "description": "Save text and media. Browse through your archive.",
+  "start_url": "/",
+  "display": "standalone",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#242424",
+  "background_color": "#242424"
+}

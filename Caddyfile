@@ -1,6 +1,5 @@
 # Example Caddyfile for development
-
-http://*:8080 {
+:8080 {
 	route /api/* {
 		uri strip_prefix /api
 		reverse_proxy localhost:8001

@@ -24,7 +24,44 @@ import "@mantine/dropzone/styles.css";
 TimeAgo.addDefaultLocale(en);
 
 export function meta() {
-  return [{ title: "archedbrows" }];
+  return [
+    {
+      title: "archedbrows",
+    },
+    {
+      name: "apple-mobile-web-app-title",
+      content: "archedbrows",
+    },
+  ];
+}
+
+export function links() {
+  return [
+    {
+      rel: "icon",
+      sizes: "96x96",
+      type: "image/png",
+      href: "/favicon-96x96.png",
+    },
+    {
+      rel: "icon",
+      type: "image/svg+xml",
+      href: "/favicon.svg",
+    },
+    {
+      rel: "shortcut icon",
+      href: "/favicon.ico",
+    },
+    {
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      href: "/apple-touch-icon.png",
+    },
+    {
+      rel: "manifest",
+      href: "/site.webmanifest",
+    },
+  ];
 }
 
 export function HydrateFallback() {
