@@ -18,7 +18,7 @@ import {
   Input,
 } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
-import { useForm } from "@mantine/form";
+import { isNotEmpty, useForm } from "@mantine/form";
 import validator from "validator";
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import { Dropzone, type FileWithPath } from "@mantine/dropzone";
@@ -71,12 +71,17 @@ export default function ShowPost() {
 
   const form = useForm({
     initialValues: {
+      title: "",
       source_url: "",
+      time_created: "",
     },
     validateInputOnChange: true,
     validate: {
+      title: isNotEmpty("Must have a title"),
       source_url: (value) =>
         !validator.isURL(value) ? "Must be a valid URL" : null,
+      time_created: (value) =>
+        !validator.isISO8601(value) ? "Must be a valid time" : null,
     },
   });
 
@@ -115,6 +120,7 @@ export default function ShowPost() {
           <TextInput
             label="Title"
             name="title"
+            required
             key={form.key("title")}
             {...form.getInputProps("title")}
           />
