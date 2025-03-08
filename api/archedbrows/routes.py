@@ -9,6 +9,7 @@ from werkzeug import Response
 
 from . import db
 from .downloader import download_post
+from .downloader.common import UnsupportedURLError
 from .models import THUMBNAIL_TYPE, Media, Post
 
 post_fields = {field.name: field for field in fields(Post)}
@@ -44,7 +45,15 @@ def posts() -> Response:
             return make_response([post.to_dict() for post in posts])
         case "POST":
             if "auto" in request.form:
-                post = download_post(request.form["url"])
+                try:
+                    post = download_post(request.form["url"])
+                except UnsupportedURLError:
+                    return make_response(
+                        {
+                            "error": "UnsupportedURLError"
+                        },
+                        HTTPStatus.BAD_REQUEST
+                    )
             else:
                 post = Post(
                     source=request.form["source"],

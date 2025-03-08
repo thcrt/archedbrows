@@ -61,6 +61,7 @@ class YTDLPDownloader(Downloader):
                     elif (
                         "Unsupported URL" in e.msg
                         or "The given url does not contain a video" in e.msg
+                        or "is not a valid URL" in e.msg
                     ):
                         raise UnsupportedURLError(self.url) from e
                     else:
