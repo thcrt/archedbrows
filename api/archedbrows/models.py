@@ -1,11 +1,15 @@
+from dataclasses import InitVar
 from datetime import datetime
 from enum import StrEnum, auto
 from io import BytesIO
+from mimetypes import guess_extension
+from pathlib import Path, PurePath
 from typing import TYPE_CHECKING, Any, cast
 
 import av
 import av.container
 import humanize
+from flask import current_app as app
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, MappedAsDataclass, mapped_column, relationship
@@ -21,6 +25,9 @@ else:
 THUMBNAIL_MAX_DIMENSIONS = (1024, 1024)
 THUMBNAIL_TYPE = "JPEG"
 
+MEDIA_DIR = Path(app.instance_path) / "media"
+THUMBS_DIR = Path(app.instance_path) / "thumbs"
+
 
 class Media(MappedAsDataclass, Model):
     class MediaType(StrEnum):
@@ -31,27 +38,66 @@ class Media(MappedAsDataclass, Model):
     __tablename__ = "images"
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
-    data: Mapped[bytes]
-    thumb: Mapped[bytes | None] = mapped_column(default=None)
-    filename: Mapped[str | None] = mapped_column(default=None)
+    init_data: InitVar[bytes]
+    source_filename: Mapped[str | None] = mapped_column(default=None)
     mime_type: Mapped[str | None] = mapped_column(default=None)
     post_id: Mapped[int | None] = mapped_column(ForeignKey("posts.id"), default=None)
     post: Mapped["Post | None"] = relationship(back_populates="media", default=None)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self, init_data: bytes) -> None:
         self.generate_thumb()
 
     def generate_thumb(self) -> None:
         if self.type == self.MediaType.VIDEO:
-            with BytesIO(self.data) as data, av.open(data) as container, BytesIO() as thumb:
+            with (
+                BytesIO(self.data) as data,
+                av.open(data) as container,
+            ):
                 container = cast(av.container.InputContainer, container)
                 video = container.streams.video[0]
                 video.codec_context.skip_frame = "NONKEY"
 
                 frame = next(container.decode(video)).to_image()
                 frame.thumbnail(THUMBNAIL_MAX_DIMENSIONS)
-                frame.save(thumb, format=THUMBNAIL_TYPE)
-                self.thumb = thumb.getvalue()
+
+                frame.save(THUMBS_DIR / f"{self.id}.jpg")
+
+    @property
+    def thumb(self) -> bytes | None:
+        def _impl() -> bytes | None:
+            try:
+                return (THUMBS_DIR / f"{self.id}.jpg").read_bytes()
+            except FileNotFoundError:
+                return None
+
+        thumb = _impl()
+        if thumb:
+            return thumb
+        self.generate_thumb()
+        return _impl()
+
+    @property
+    def extension(self) -> str:
+        if self.source_filename:
+            path_suffix = PurePath(self.source_filename).suffix
+            guessed = guess_extension(self.source_filename)
+            if path_suffix:
+                return path_suffix
+            if guessed:
+                return guessed
+        return ""
+
+    @property
+    def filename(self) -> str:
+        return f"{self.id}{self.extension}"
+
+    @property
+    def data(self) -> bytes:
+        return (MEDIA_DIR / self.filename).read_bytes()
+
+    @data.setter
+    def data(self, value: bytes) -> None:
+        _ = (MEDIA_DIR / self.filename).write_bytes(value)
 
     @hybrid_property
     def type(self) -> MediaType | None:

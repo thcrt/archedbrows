@@ -2,15 +2,14 @@ from dataclasses import fields
 from datetime import datetime
 from http import HTTPStatus
 from http.client import IM_A_TEAPOT
-from io import BytesIO
 
-from flask import current_app, make_response, request, send_file
+from flask import current_app, make_response, request, send_from_directory
 from werkzeug import Response
 
 from . import db
 from .downloader import download_post
 from .downloader.common import UnsupportedURLError
-from .models import THUMBNAIL_TYPE, Media, Post
+from .models import MEDIA_DIR, THUMBS_DIR, Media, Post
 
 post_fields = {field.name: field for field in fields(Post)}
 
@@ -18,23 +17,12 @@ post_fields = {field.name: field for field in fields(Post)}
 @current_app.route("/media/<int:media_id>")
 def media(media_id: int) -> Response:
     media_obj = db.get_or_404(Media, media_id)
-    return send_file(
-        BytesIO(media_obj.data),
-        download_name=media_obj.filename,
-        mimetype=media_obj.mime_type,
-    )
+    return send_from_directory(MEDIA_DIR, media_obj.filename, mimetype=media_obj.mime_type)
 
 
 @current_app.route("/media/<int:media_id>/thumb")
 def thumb(media_id: int) -> Response:
-    media_obj = db.get_or_404(Media, media_id)
-    if media_obj.thumb:
-        return send_file(
-            BytesIO(media_obj.thumb),
-            download_name=f"thumb_{media_obj.filename}",
-            mimetype=f"image/{THUMBNAIL_TYPE}",
-        )
-    return media(media_id=media_id)
+    return send_from_directory(THUMBS_DIR, f"{media_id}.jpg")
 
 
 @current_app.route("/posts", methods=["GET", "POST"])
@@ -48,12 +36,7 @@ def posts() -> Response:
                 try:
                     post = download_post(request.form["url"])
                 except UnsupportedURLError:
-                    return make_response(
-                        {
-                            "error": "UnsupportedURLError"
-                        },
-                        HTTPStatus.BAD_REQUEST
-                    )
+                    return make_response({"error": "UnsupportedURLError"}, HTTPStatus.BAD_REQUEST)
             else:
                 post = Post(
                     source=request.form["source"],
@@ -69,7 +52,11 @@ def posts() -> Response:
                 )
                 for file in request.files.getlist("media"):
                     post.media.append(
-                        Media(file.stream.read(), filename=file.filename, mime_type=file.mimetype)
+                        Media(
+                            file.stream.read(),
+                            source_filename=file.filename,
+                            mime_type=file.mimetype,
+                        )
                     )
             db.session.add(post)
             db.session.commit()

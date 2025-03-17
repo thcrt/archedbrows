@@ -22,7 +22,6 @@ def create_app() -> f.Flask:
 
     with app.app_context():
         from . import routes  # noqa: F401 # pyright: ignore[reportUnusedImport]
-
-    from .models import Media, Post  # noqa: F401 # pyright: ignore[reportUnusedImport]
+        from .models import Media, Post  # noqa: F401 # pyright: ignore[reportUnusedImport]
 
     return app

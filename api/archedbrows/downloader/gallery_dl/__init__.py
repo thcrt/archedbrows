@@ -30,7 +30,7 @@ class GalleryDLDownloader(Downloader):
             post.media.append(
                 Media(
                     file.data,
-                    filename=str(file.name),
+                    source_filename=str(file.name),
                     mime_type=mimetypes.guess_file_type(str(file.name))[0],
                 )
             )
