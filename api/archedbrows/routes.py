@@ -22,7 +22,8 @@ def media(media_id: int) -> Response:
 
 @current_app.route("/media/<int:media_id>/thumb")
 def thumb(media_id: int) -> Response:
-    return send_from_directory(THUMBS_DIR, f"{media_id}.jpg")
+    media_obj = db.get_or_404(Media, media_id)
+    return send_from_directory(THUMBS_DIR, f"{media_obj.file_id}.jpg", mimetype="image/jpeg")
 
 
 @current_app.route("/posts", methods=["GET", "POST"])

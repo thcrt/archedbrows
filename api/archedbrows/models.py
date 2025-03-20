@@ -11,6 +11,7 @@ import av
 import av.container
 import humanize
 from flask import current_app as app
+from PIL import Image
 from sqlalchemy import ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, MappedAsDataclass, mapped_column, relationship
@@ -70,6 +71,11 @@ class Media(MappedAsDataclass, Model):
                 frame.thumbnail(THUMBNAIL_MAX_DIMENSIONS)
 
                 frame.save(THUMBS_DIR / f"{self.file_id}.jpg")
+        elif self.type == self.MediaType.IMAGE:
+            with BytesIO(self.data) as data:
+                im = Image.open(data)
+                im.thumbnail(THUMBNAIL_MAX_DIMENSIONS)
+                im.save(THUMBS_DIR / f"{self.file_id}.jpg")
 
     @property
     def thumb(self) -> bytes | None:
