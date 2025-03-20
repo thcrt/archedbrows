@@ -5,6 +5,7 @@ from io import BytesIO
 from mimetypes import guess_extension
 from pathlib import Path, PurePath
 from typing import TYPE_CHECKING, Any, cast
+from uuid import uuid4
 
 import av
 import av.container
@@ -42,12 +43,17 @@ class Media(MappedAsDataclass, Model):
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
     init_data: InitVar[bytes]
+    file_id: Mapped[str] = mapped_column(init=False)
     source_filename: Mapped[str | None] = mapped_column(default=None)
     mime_type: Mapped[str | None] = mapped_column(default=None)
     post_id: Mapped[int | None] = mapped_column(ForeignKey("posts.id"), default=None)
     post: Mapped["Post | None"] = relationship(back_populates="media", default=None)
 
     def __post_init__(self, init_data: bytes) -> None:
+        # We need to use UUIDs for the filenames, because the actual database ID isn't avaialable to
+        # us yet in __post_init__ :(
+        self.file_id = uuid4().hex
+        self.data = init_data
         self.generate_thumb()
 
     def generate_thumb(self) -> None:
@@ -63,13 +69,13 @@ class Media(MappedAsDataclass, Model):
                 frame = next(container.decode(video)).to_image()
                 frame.thumbnail(THUMBNAIL_MAX_DIMENSIONS)
 
-                frame.save(THUMBS_DIR / f"{self.id}.jpg")
+                frame.save(THUMBS_DIR / f"{self.file_id}.jpg")
 
     @property
     def thumb(self) -> bytes | None:
         def _impl() -> bytes | None:
             try:
-                return (THUMBS_DIR / f"{self.id}.jpg").read_bytes()
+                return (THUMBS_DIR / f"{self.file_id}.jpg").read_bytes()
             except FileNotFoundError:
                 return None
 
@@ -92,7 +98,7 @@ class Media(MappedAsDataclass, Model):
 
     @property
     def filename(self) -> str:
-        return f"{self.id}{self.extension}"
+        return f"{self.file_id}{self.extension}"
 
     @property
     def data(self) -> bytes:
@@ -100,7 +106,8 @@ class Media(MappedAsDataclass, Model):
 
     @data.setter
     def data(self, value: bytes) -> None:
-        _ = (MEDIA_DIR / self.filename).write_bytes(value)
+        with (MEDIA_DIR / self.filename).open("wb+") as f:
+            _ = f.write(value)
 
     @hybrid_property
     def type(self) -> MediaType | None:
@@ -115,7 +122,7 @@ class Media(MappedAsDataclass, Model):
     def to_dict(self) -> dict[str, int | str | None]:
         return {
             "id": self.id,
-            "filename": self.filename,
+            "filename": self.source_filename,
             "type": self.type,
         }
 
