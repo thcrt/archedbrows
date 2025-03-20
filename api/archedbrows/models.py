@@ -28,6 +28,9 @@ THUMBNAIL_TYPE = "JPEG"
 MEDIA_DIR = Path(app.instance_path) / "media"
 THUMBS_DIR = Path(app.instance_path) / "thumbs"
 
+MEDIA_DIR.mkdir(exist_ok=True)
+THUMBS_DIR.mkdir(exist_ok=True)
+
 
 class Media(MappedAsDataclass, Model):
     class MediaType(StrEnum):
